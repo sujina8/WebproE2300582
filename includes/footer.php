@@ -1,0 +1,1 @@
+<?php // Shared Footer ?>
