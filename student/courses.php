@@ -1,1 +1,0 @@
-<?php // Browse Courses ?>
