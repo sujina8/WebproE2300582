@@ -1,1 +1,0 @@
-<?php // Placeholder provider data ?>
