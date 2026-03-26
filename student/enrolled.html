@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>My Enrolments – EduSkill</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="../assets/css/shared.css"/>
+  <link rel="stylesheet" href="../assets/css/Sujina.css"/>
+</head>
+<body>
+<div class="dash-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo"><img src="../assets/images/eduskilllogo.jpeg" alt="EduSkill" style="height:28px;width:28px;border-radius:6px;object-fit:cover;vertical-align:middle;margin-right:6px"> My Learning</div>
+    <div class="sidebar-label">Main</div>
+    <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+    <div class="sidebar-label">Courses</div>
+    <a href="browse.html"><i class="fas fa-compass"></i> Browse Courses</a>
+    <a href="enrolled.html" class="active"><i class="fas fa-book-open"></i> My Enrolments</a>
+    <a href="learning.html"><i class="fas fa-play-circle"></i> Continue Learning</a>
+    <div class="sidebar-label">Account</div>
+    <a href="profile.html"><i class="fas fa-user-edit"></i> My Profile</a>
+    <a href="receipt.html"><i class="fas fa-receipt"></i> Receipts</a>
+    <a href="login.html" class="logout-link" onclick="EduAuth.logout('login.html')"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  </aside>
+  <main class="dash-main">
+    <div class="nav-wrapper" style="position:fixed;top:16px;left:var(--sidebar-w);right:0;transform:none;width:calc(100% - var(--sidebar-w) - 32px);max-width:900px">
+      <nav id="navbar" style="border-radius:20px">
+        <span class="nav-logo" style="font-size:1rem"><i class="fas fa-book-open" style="color:var(--primary)"></i> My Enrolments</span>
+        <a href="login.html" onclick="EduAuth.logout('login.html')" class="btn-outline" style="font-size:.8rem;padding:7px 16px"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </nav>
+    </div>
+    <div style="margin-top:56px">
+      <div class="table-wrap">
+        <div class="panel-header" style="padding:18px 22px;border-bottom:1px solid var(--cream-dark);display:flex;justify-content:space-between;align-items:center">
+          <h3><i class="fas fa-list-check" style="color:var(--primary);margin-right:8px"></i>Enrolled Courses</h3>
+          <a href="browse.html" class="btn-primary" style="font-size:.82rem;padding:9px 18px"><i class="fas fa-plus"></i> Enroll More</a>
+        </div>
+        <table>
+          <thead><tr><th>Course</th><th>Provider</th><th>Enrolled</th><th>Progress</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>Full-Stack Web Development</strong></td>
+              <td>TechPro Academy</td><td>02 Jan 2025</td>
+              <td><div style="display:flex;align-items:center;gap:8px"><div style="flex:1;height:6px;background:var(--cream-dark);border-radius:3px;overflow:hidden"><div style="height:100%;width:75%;background:linear-gradient(90deg,var(--primary),var(--primary-light));border-radius:3px"></div></div><span style="font-size:.76rem;font-weight:600;color:var(--primary)">75%</span></div></td>
+              <td><span class="badge badge-blue">In Progress</span></td>
+              <td style="display:flex;gap:6px;flex-wrap:wrap">
+                <button class="tbl-btn tbl-default" onclick="window.location.href='learning.html?course=Full-Stack'"><i class="fas fa-play"></i> Continue</button>
+                <button class="tbl-btn tbl-blue" onclick="window.location.href='receipt.html?course=Full-Stack+Web+Development&fee=1%2C500&provider=TechPro+Academy'"><i class="fas fa-receipt"></i> Receipt</button>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>UI/UX Design Fundamentals</strong></td>
+              <td>DesignHub MY</td><td>15 Jan 2025</td>
+              <td><div style="display:flex;align-items:center;gap:8px"><div style="flex:1;height:6px;background:var(--cream-dark);border-radius:3px;overflow:hidden"><div style="height:100%;width:40%;background:linear-gradient(90deg,var(--primary),var(--primary-light));border-radius:3px"></div></div><span style="font-size:.76rem;font-weight:600;color:var(--primary)">40%</span></div></td>
+              <td><span class="badge badge-blue">In Progress</span></td>
+              <td style="display:flex;gap:6px">
+                <button class="tbl-btn tbl-default" onclick="window.location.href='learning.html?course=UIUX'"><i class="fas fa-play"></i> Continue</button>
+                <button class="tbl-btn tbl-blue" onclick="window.location.href='receipt.html?course=UI%2FUX+Design&fee=1%2C500&provider=DesignHub+MY'"><i class="fas fa-receipt"></i> Receipt</button>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Digital Marketing Mastery</strong></td>
+              <td>MarketPro Institute</td><td>10 Dec 2024</td>
+              <td><div style="display:flex;align-items:center;gap:8px"><div style="flex:1;height:6px;background:var(--cream-dark);border-radius:3px;overflow:hidden"><div style="height:100%;width:100%;background:#16a34a;border-radius:3px"></div></div><span style="font-size:.76rem;font-weight:600;color:#16a34a">100%</span></div></td>
+              <td><span class="badge badge-green">Completed</span></td>
+              <td style="display:flex;gap:6px;flex-wrap:wrap">
+                <button class="tbl-btn tbl-green" onclick="showToast('Certificate downloaded!')"><i class="fas fa-certificate"></i> Certificate</button>
+                <button class="tbl-btn tbl-blue" onclick="window.location.href='receipt.html?course=Digital+Marketing+Mastery&fee=1%2C500&provider=MarketPro'"><i class="fas fa-receipt"></i> Receipt</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="../assets/js/shared.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/Sujina.js"></script>
+<script>requireStudent();</script>
+</body>
+</html>

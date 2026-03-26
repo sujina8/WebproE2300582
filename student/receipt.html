@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Enrolment Receipt – EduSkill</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="../assets/css/shared.css"/>
+  <link rel="stylesheet" href="../assets/css/Sujina.css"/>
+  <style>body{background:#f0e6d3}</style>
+</head>
+<body>
+<div class="nav-wrapper" style="top:12px">
+  <nav id="navbar">
+    <a href="dashboard.html" class="nav-logo"><img src="../assets/images/eduskilllogo.jpeg" alt="EduSkill" style="height:32px;width:32px;border-radius:8px;object-fit:cover;vertical-align:middle;margin-right:4px">EduSkill</a>
+    <div style="display:flex;gap:10px">
+      <button class="btn-outline" onclick="history.back()" style="font-size:.82rem;padding:8px 18px"><i class="fas fa-arrow-left"></i> Back</button>
+      <button class="btn-primary" onclick="window.print()" style="font-size:.82rem;padding:8px 18px"><i class="fas fa-print"></i> Print</button>
+    </div>
+  </nav>
+</div>
+
+<div class="receipt-page">
+  <div class="receipt">
+    <div class="r-header">
+      <div class="r-logo">
+        <div class="r-logo-icon"><i class="fas fa-graduation-cap"></i></div>
+        <div class="r-logo-text"><h2>EduSkill</h2><p>Ministry of Education</p></div>
+      </div>
+      <div class="r-badge">
+        <div class="r-official"><i class="fas fa-shield-alt"></i> &nbsp;OFFICIAL RECEIPT</div>
+        <div class="r-no" id="rNo">Receipt No: EDU-2025-0847</div>
+      </div>
+    </div>
+    <div class="r-body">
+      <div class="success-banner">
+        <i class="fas fa-check-circle"></i>
+        <div><h3>Payment Successful – Enrolment Confirmed</h3><p>Your enrolment has been processed. A copy of this receipt has been sent to your registered email.</p></div>
+      </div>
+      <div class="info-grid">
+        <div class="info-sec"><h4>Student Details</h4>
+          <div class="i-row"><span class="lbl">Full Name</span><span class="val" id="sName">Alex Rahim</span></div>
+          <div class="i-row"><span class="lbl">Student ID</span><span class="val">STU-2025-0312</span></div>
+          <div class="i-row"><span class="lbl">Email</span><span class="val">student@eduskill.my</span></div>
+          <div class="i-row"><span class="lbl">Phone</span><span class="val">+60 12-345 6789</span></div>
+        </div>
+        <div class="info-sec"><h4>Transaction Details</h4>
+          <div class="i-row"><span class="lbl">Date</span><span class="val" id="rDate">—</span></div>
+          <div class="i-row"><span class="lbl">Time</span><span class="val" id="rTime">—</span></div>
+          <div class="i-row"><span class="lbl">Payment Method</span><span class="val">Online Transfer</span></div>
+          <div class="i-row"><span class="lbl">Transaction Ref</span><span class="val" id="rRef">—</span></div>
+        </div>
+      </div>
+      <div class="info-sec" style="margin-bottom:14px"><h4>Course Enrolled</h4></div>
+      <div style="background:var(--cream);border-radius:14px;padding:20px 22px;margin-bottom:28px;display:flex;align-items:center;gap:16px">
+        <div id="cIconBox" style="width:54px;height:54px;border-radius:14px;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="fas fa-code" style="font-size:1.3rem;color:white"></i></div>
+        <div><strong id="cName" style="font-size:1rem">Full-Stack Web Development</strong><p id="cProv" style="font-size:.82rem;color:var(--text-light);margin-top:4px">TechPro Academy</p></div>
+      </div>
+      <div class="info-sec" style="margin-bottom:14px"><h4>Payment Summary</h4></div>
+      <table class="pay-table">
+        <tr><td>Course Fee</td><td id="cFee">NRs. 1,500.00</td></tr>
+        <tr><td>Processing Fee</td><td>NRs. 0.00</td></tr>
+        <tr><td>Discount</td><td style="color:#16a34a">— NRs. 0.00</td></tr>
+        <tr class="total"><td><strong>Total Paid</strong></td><td id="cTotal"><strong>NRs. 1,500.00</strong></td></tr>
+      </table>
+    </div>
+    <div class="r-footer">
+      <div>
+        <p><strong>EduSkill System</strong> · Ministry of Education</p>
+        <p>Putrajaya &nbsp;·&nbsp; support@eduskill.gov.my &nbsp;·&nbsp; +603-8000-1234</p>
+        <p style="margin-top:6px;font-style:italic">Computer-generated receipt. Valid without signature.</p>
+      </div>
+      <div style="width:64px;height:64px;background:white;border:1px solid var(--cream-dark);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="fas fa-qrcode" style="font-size:1.8rem;color:var(--text-light)"></i></div>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/js/shared.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/Sujina.js"></script>
+<script>
+requireStudent();
+initNavScroll();
+populateReceipt();
+</script>
+</body>
+</html>

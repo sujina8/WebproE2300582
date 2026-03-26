@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Student Dashboard – EduSkill</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="../assets/css/shared.css"/>
+  <link rel="stylesheet" href="../assets/css/Sujina.css"/>
+</head>
+<body>
+<div class="dash-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo"><img src="../assets/images/eduskilllogo.jpeg" alt="EduSkill" style="height:28px;width:28px;border-radius:6px;object-fit:cover;vertical-align:middle;margin-right:6px"> My Learning</div>
+    <div class="sidebar-label">Main</div>
+    <a href="dashboard.html" class="active"><i class="fas fa-home"></i> Dashboard</a>
+    <div class="sidebar-label">Courses</div>
+    <a href="browse.html"><i class="fas fa-compass"></i> Browse Courses</a>
+    <a href="enrolled.html"><i class="fas fa-book-open"></i> My Enrolments</a>
+    <a href="learning.html"><i class="fas fa-play-circle"></i> Continue Learning</a>
+    <div class="sidebar-label">Account</div>
+    <a href="profile.html"><i class="fas fa-user-edit"></i> My Profile</a>
+    <a href="receipt.html"><i class="fas fa-receipt"></i> Receipts</a>
+    <a href="login.html" class="logout-link" onclick="EduAuth.logout('login.html')"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  </aside>
+  <main class="dash-main">
+    <!-- Top nav pill for dashboard pages -->
+    <div class="nav-wrapper" style="position:fixed;top:16px;left:var(--sidebar-w);right:0;transform:none;width:calc(100% - var(--sidebar-w) - 32px);max-width:900px">
+      <nav id="navbar" style="border-radius:20px">
+        <span class="nav-logo" style="font-size:1rem"><img src="../assets/images/eduskilllogo.jpeg" alt="EduSkill" style="height:28px;width:28px;border-radius:6px;object-fit:cover;vertical-align:middle;margin-right:4px"> Student Portal</span>
+        <div style="display:flex;align-items:center;gap:12px">
+          <span id="navName" style="font-size:.85rem;color:var(--text-mid)"></span>
+          <a href="login.html" onclick="EduAuth.logout('login.html')" class="btn-outline" style="font-size:.8rem;padding:7px 16px"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+      </nav>
+    </div>
+
+    <div style="margin-top:56px">
+      <div class="welcome-banner">
+        <div><h2 id="wName">Welcome!</h2><p id="wSubtitle">Start your learning journey by exploring available courses.</p></div>
+        <div class="wb-avatar" id="wAvatar">?</div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-box"><div class="sb-icon"><i class="fas fa-book-open"></i></div><div class="sb-val" id="statEnrolled">0</div><div class="sb-label">Enrolled Courses</div></div>
+        <div class="stat-box"><div class="sb-icon"><i class="fas fa-check-circle"></i></div><div class="sb-val" id="statCompleted">0</div><div class="sb-label">Completed</div></div>
+        <div class="stat-box"><div class="sb-icon"><i class="fas fa-certificate"></i></div><div class="sb-val" id="statCerts">0</div><div class="sb-label">Certificates</div></div>
+        <div class="stat-box"><div class="sb-icon"><i class="fas fa-clock"></i></div><div class="sb-val" id="statHours">0</div><div class="sb-label">Hours Learned</div></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header"><h3><i class="fas fa-chart-bar" style="color:var(--primary);margin-right:8px"></i>Course Progress</h3></div>
+        <div class="panel-body" id="progressPanel">
+          <div style="text-align:center;padding:36px 20px;color:var(--text-light)">
+            <i class="fas fa-book-open" style="font-size:2.5rem;opacity:.3;margin-bottom:14px;display:block"></i>
+            <p style="font-size:.95rem;margin:0 0 16px">You haven't enrolled in any courses yet.</p>
+            <a href="browse.html" class="btn-primary" style="display:inline-flex;gap:8px;align-items:center"><i class="fas fa-compass"></i> Browse Courses</a>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px" class="two-col">
+        <div class="panel">
+          <div class="panel-header"><h3><i class="fas fa-lightbulb" style="color:var(--primary);margin-right:8px"></i>Quick Actions</h3></div>
+          <div class="panel-body" style="display:flex;flex-direction:column;gap:10px">
+            <a href="browse.html" class="btn-primary" style="justify-content:center"><i class="fas fa-compass"></i> Browse New Courses</a>
+            <a href="enrolled.html" class="btn-outline" style="justify-content:center"><i class="fas fa-list-check"></i> View My Enrolments</a>
+            <a href="learning.html" class="btn-outline" style="justify-content:center"><i class="fas fa-play-circle"></i> Continue Learning</a>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><h3><i class="fas fa-certificate" style="color:var(--primary);margin-right:8px"></i>My Certificates</h3></div>
+          <div class="panel-body" id="certsPanel">
+            <div style="text-align:center;padding:24px 16px;color:var(--text-light)">
+              <i class="fas fa-award" style="font-size:2rem;opacity:.3;margin-bottom:10px;display:block"></i>
+              <p style="font-size:.85rem;margin:0">Complete courses to earn certificates.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="../assets/js/shared.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/Sujina.js"></script>
+<script>
+requireStudent();
+(function() {
+  var name = EduAuth.name() || 'Student';
+  document.getElementById('navName').textContent = name;
+  var parts = name.trim().split(' ');
+  var initials = parts.length >= 2 ? parts[0][0].toUpperCase() + parts[parts.length-1][0].toUpperCase() : name.slice(0,2).toUpperCase();
+  document.getElementById('wAvatar').textContent = initials;
+  document.getElementById('wName').textContent = 'Welcome, ' + parts[0] + '!';
+})();
+</script>
+</body>
+</html>

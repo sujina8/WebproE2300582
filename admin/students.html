@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Student Information – EduSkill</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="../assets/css/shared.css"/>
+  <link rel="stylesheet" href="../assets/css/Mijala.css"/>
+</head>
+<body>
+<div class="dash-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo"><i class="fas fa-user-shield"></i> Admin</div>
+    <div class="sidebar-label">Main</div>
+    <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+    <div class="sidebar-label">Management</div>
+    <a href="providers.html"><i class="fas fa-building"></i> Provider Management</a>
+    <a href="courses.html"><i class="fas fa-book"></i> Course Management</a>
+    <a href="students.html" class="active"><i class="fas fa-users"></i> Student Information</a>
+    <div class="sidebar-label">Reports</div>
+    <a href="reports.html"><i class="fas fa-chart-pie"></i> Platform Reports</a>
+    <div class="sidebar-label">System</div>
+    <a href="#" onclick="showToast('Settings coming soon.')"><i class="fas fa-cog"></i> Settings</a>
+    <a href="login.html" class="logout-link" onclick="EduAuth.logout('login.html')"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  </aside>
+  <main class="dash-main">
+    <div class="nav-wrapper" style="position:fixed;top:16px;left:var(--sidebar-w);right:0;transform:none;width:calc(100% - var(--sidebar-w) - 32px);max-width:900px">
+      <nav id="navbar" style="border-radius:20px">
+        <span class="nav-logo" style="font-size:1rem"><i class="fas fa-users" style="color:var(--primary);margin-right:6px"></i>Student Information</span>
+        <a href="login.html" onclick="EduAuth.logout('login.html')" class="btn-outline" style="font-size:.8rem;padding:7px 16px"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </nav>
+    </div>
+
+    <div style="margin-top:56px">
+      <!-- Stats -->
+      <div class="stat-grid" style="margin-bottom:24px">
+        <div class="stat-box"><div class="sb-icon green"><i class="fas fa-users"></i></div><div class="sb-val">1,240</div><div class="sb-label">Registered Students</div></div>
+        <div class="stat-box"><div class="sb-icon"><i class="fas fa-user-check"></i></div><div class="sb-val">1,210</div><div class="sb-label">Active Students</div></div>
+        <div class="stat-box"><div class="sb-icon blue"><i class="fas fa-certificate"></i></div><div class="sb-val">312</div><div class="sb-label">Certificates Issued</div></div>
+        <div class="stat-box"><div class="sb-icon purple"><i class="fas fa-user-plus"></i></div><div class="sb-val">+84</div><div class="sb-label">New This Month</div></div>
+      </div>
+
+      <!-- Enrolment details table -->
+      <div class="table-wrap" style="margin-bottom:24px">
+        <div class="table-header">
+          <h3><i class="fas fa-list-check" style="color:var(--primary);margin-right:8px"></i>Enrolled Students</h3>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <input type="text" class="table-search" placeholder="Search by name or email…" oninput="searchStudents(this.value)"/>
+            <select onchange="filterByCourse(this.value)" style="padding:8px 12px;border-radius:8px;border:1.5px solid rgba(201,123,46,.2);font-family:'DM Sans',sans-serif;font-size:.83rem;outline:none">
+              <option value="">All Courses</option>
+              <option>Full-Stack Web Development</option>
+              <option>UI/UX Design Fundamentals</option>
+              <option>Digital Marketing Mastery</option>
+              <option>Python for Data Science</option>
+              <option>Mobile App Development</option>
+            </select>
+            <button class="btn-primary" style="font-size:.82rem;padding:9px 16px" onclick="showToast('Student list exported.')"><i class="fas fa-download"></i> Export</button>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr><th>Student Name</th><th>Email</th><th>Course(s)</th><th>Joined</th><th>Progress</th><th>Status</th><th>Action</th></tr>
+          </thead>
+          <tbody id="studentDetailTbody"></tbody>
+        </table>
+      </div>
+
+      <!-- Enrolment breakdown chart -->
+      <div class="form-card">
+        <h3><i class="fas fa-chart-bar" style="color:var(--primary);margin-right:8px"></i>Monthly New Student Registrations – 2025</h3>
+        <p style="font-size:.85rem;color:var(--text-light);margin-bottom:18px">Total new student accounts registered per month on the platform.</p>
+        <div class="chart-wrap" id="studentChart"></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Student detail modal -->
+<div class="modal-overlay" id="studentModal">
+  <div class="modal" style="max-width:520px">
+    <h3 id="mSName">Student Details</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:.87rem;margin-bottom:16px">
+      <div><span style="color:var(--text-light)">Email:</span><br><span id="mSEmail">—</span></div>
+      <div><span style="color:var(--text-light)">Joined:</span><br><span id="mSJoined">—</span></div>
+      <div><span style="color:var(--text-light)">Courses Enrolled:</span><br><span id="mSCourses">—</span></div>
+      <div><span style="color:var(--text-light)">Status:</span><br><span id="mSStatus">—</span></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-outline" onclick="document.getElementById('studentModal').classList.remove('open')">Close</button>
+      <button class="btn-danger" onclick="showToast('Student suspended.');document.getElementById('studentModal').classList.remove('open')"><i class="fas fa-ban"></i> Suspend</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><i id="toastIcon" class="fas fa-check-circle" style="color:#4ade80"></i><span id="toastMsg"></span></div>
+
+<script src="../assets/js/shared.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/Mijala.js"></script>
+<script>
+requireAdmin();
+
+// Merge real registered students from localStorage into DETAILED_STUDENTS
+(function mergeRealStudents() {
+  EduAuth.getStudents().forEach(s => {
+    if (!DETAILED_STUDENTS.find(x => x.email === s.email)) {
+      DETAILED_STUDENTS.push({
+        name   : s.name,
+        email  : s.email,
+        courses: 'Not enrolled yet',
+        joined : new Date(s.joinedAt).toLocaleDateString('en-GB', {day:'2-digit',month:'short',year:'numeric'}),
+        progress: 0,
+        status : 'Active',
+      });
+    }
+  });
+})();
+
+// Extended student data with enrolment details
+const DETAILED_STUDENTS = [
+  { name:'Ahmad Faris',   email:'ahmad@example.com',  courses:'Full-Stack Web Dev',   joined:'02 Jan 2025', progress:75,  status:'Active' },
+  { name:'Siti Nabilah',  email:'siti@example.com',   courses:'UI/UX Design',         joined:'05 Jan 2025', progress:40,  status:'Active' },
+  { name:'Rajesh Kumar',  email:'rajesh@example.com', courses:'Python for DS',         joined:'10 Jan 2025', progress:60,  status:'Active' },
+  { name:'Priya Menon',   email:'priya@example.com',  courses:'Mobile App Dev',        joined:'15 Jan 2025', progress:25,  status:'Active' },
+  { name:'Lee Wei Hong',  email:'lee@example.com',    courses:'Full-Stack Web Dev',    joined:'20 Jan 2025', progress:90,  status:'Active' },
+  { name:'Nur Aisyah',    email:'aisyah@example.com', courses:'Digital Marketing',     joined:'25 Jan 2025', progress:55,  status:'Active' },
+  { name:'David Lim',     email:'david@example.com',  courses:'Financial Accounting',  joined:'01 Feb 2025', progress:30,  status:'Active' },
+  { name:'Fatimah Zahra', email:'fatimah@example.com',courses:'UI/UX Design',          joined:'03 Feb 2025', progress:65,  status:'Active' },
+  { name:'Kevin Chong',   email:'kevin@example.com',  courses:'Full-Stack Web Dev',    joined:'08 Feb 2025', progress:80,  status:'Active' },
+  { name:'Amirah Hassan', email:'amirah@example.com', courses:'First Aid & CPR',       joined:'12 Feb 2025', progress:100, status:'Completed' },
+];
+
+function renderDetailedStudents(data) {
+  const tbody = document.getElementById('studentDetailTbody');
+  if (!tbody) return;
+  (data || DETAILED_STUDENTS).forEach(() => {});
+  tbody.innerHTML = (data || DETAILED_STUDENTS).map(s => `
+    <tr>
+      <td><strong>${s.name}</strong></td>
+      <td style="font-size:.82rem">${s.email}</td>
+      <td style="font-size:.82rem;color:var(--text-mid)">${s.courses}</td>
+      <td style="font-size:.82rem">${s.joined}</td>
+      <td>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="flex:1;height:6px;background:var(--cream-dark);border-radius:3px;overflow:hidden;min-width:60px">
+            <div style="height:100%;width:${s.progress}%;background:${s.progress===100?'#16a34a':'linear-gradient(90deg,var(--primary),var(--primary-light))'};border-radius:3px"></div>
+          </div>
+          <span style="font-size:.75rem;font-weight:600;color:${s.progress===100?'#16a34a':'var(--primary)'};white-space:nowrap">${s.progress}%</span>
+        </div>
+      </td>
+      <td><span class="badge badge-${s.status==='Completed'?'green':'blue'}">${s.status}</span></td>
+      <td><button class="btn-view" onclick="viewStudent('${s.name}','${s.email}','${s.joined}','${s.courses}','${s.status}')"><i class="fas fa-eye"></i></button></td>
+    </tr>`).join('');
+}
+
+function viewStudent(name, email, joined, courses, status) {
+  document.getElementById('mSName').textContent    = name;
+  document.getElementById('mSEmail').textContent   = email;
+  document.getElementById('mSJoined').textContent  = joined;
+  document.getElementById('mSCourses').textContent = courses;
+  document.getElementById('mSStatus').textContent  = status;
+  document.getElementById('studentModal').classList.add('open');
+}
+
+function searchStudents(q) {
+  const data = q ? DETAILED_STUDENTS.filter(s => s.name.toLowerCase().includes(q.toLowerCase()) || s.email.toLowerCase().includes(q.toLowerCase())) : DETAILED_STUDENTS;
+  renderDetailedStudents(data);
+}
+
+function filterByCourse(c) {
+  const data = c ? DETAILED_STUDENTS.filter(s => s.courses.toLowerCase().includes(c.toLowerCase().split(' ')[0])) : DETAILED_STUDENTS;
+  renderDetailedStudents(data);
+}
+
+// Registration chart
+const regData = [42,67,55,89,120,98,76,110,87,65,88,44];
+renderBarChart('studentChart',
+  ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+  regData);
+
+renderDetailedStudents();
+</script>
+</body>
+</html>
