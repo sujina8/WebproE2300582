@@ -85,6 +85,37 @@
     </div>
   </main>
 </div>
+<!-- Provider detail modal -->
+<div class="modal-overlay" id="provModal">
+  <div class="modal" style="max-width:620px">
+    <h3 id="modalProvName"></h3>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;font-size:.87rem">
+      <div><span style="color:var(--text-light)">Type:</span> <span id="mType"></span></div>
+      <div><span style="color:var(--text-light)">Reg No:</span> <span id="mReg"></span></div>
+      <div><span style="color:var(--text-light)">Contact:</span> <span id="mContact"></span></div>
+      <div><span style="color:var(--text-light)">Email:</span> <span id="mEmail"></span></div>
+      <div><span style="color:var(--text-light)">Courses:</span> <span id="mCourses"></span></div>
+      <div><span style="color:var(--text-light)">Students:</span> <span id="mStudents"></span></div>
+      <div><span style="color:var(--text-light)">Applied:</span> <span id="mDate"></span></div>
+      <div><span style="color:var(--text-light)">Status:</span> <span id="mStatus"></span></div>
+    </div>
+
+    <div style="display:flex;gap:10px;margin-top:10px">
+      <button class="btn-approve" onclick="modalApproval('approve')">
+        <i class="fas fa-check"></i> Approve
+      </button>
+
+      <button class="btn-reject" onclick="modalApproval('reject')">
+        <i class="fas fa-times"></i> Reject
+      </button>
+
+      <button class="btn-outline" onclick="document.getElementById('provModal').classList.remove('open')">
+        Close
+      </button>
+    </div>
+  </div>
+</div>
 
 <div class="toast" id="toast"><i id="toastIcon" class="fas fa-check-circle" style="color:#4ade80"></i><span id="toastMsg"></span></div>
 
@@ -139,6 +170,55 @@ document.getElementById('navName').textContent = EduAuth.name();
     }
   });
 })();
+
+var _modalProviderId = null;
+
+function viewProvider(name, type, reg, courses, students, status, contact, email, date) {
+  _modalProviderId = null;
+
+  document.getElementById('modalProvName').textContent = name;
+  document.getElementById('mType').textContent = type;
+  document.getElementById('mReg').textContent = reg;
+  document.getElementById('mCourses').textContent = courses;
+  document.getElementById('mStudents').textContent = students;
+  document.getElementById('mContact').textContent = contact;
+  document.getElementById('mEmail').textContent = email;
+  document.getElementById('mDate').textContent = date;
+
+  document.getElementById('mStatus').innerHTML =
+    '<span class="badge badge-amber">Pending</span>';
+
+  document.getElementById('provModal').classList.add('open');
+}
+
+function viewPendingProvider(id) {
+  var p = PENDING_PROVIDERS.find(function(x){
+    return String(x.id) === String(id);
+  });
+
+  if (!p) return;
+
+  _modalProviderId = id;
+
+  viewProvider(
+    p.name,
+    p.type,
+    p.reg,
+    0,
+    0,
+    'Pending',
+    p.contact,
+    p.email,
+    p.date
+  );
+}
+
+function modalApproval(action) {
+  if (_modalProviderId === null) return;
+
+  document.getElementById('provModal').classList.remove('open');
+  handleApproval(_modalProviderId, action);
+}
 
 renderApprovals();
 renderProviders();
