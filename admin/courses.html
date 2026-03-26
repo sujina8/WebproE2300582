@@ -113,7 +113,7 @@ function renderAdminCourses(data) {
       <td><strong>${c.title}</strong></td>
       <td style="font-size:.82rem">${c.provider}</td>
       <td><span class="badge badge-gray">${c.cat}</span></td>
-      <td>NRs.${(c.price||0).toLocaleString()}</td>
+      <td>RM ${(c.price||0).toLocaleString()}</td>
       <td>${c.enrolled}</td>
       <td style="color:#f59e0b;font-weight:600">${c.rating || '4.7'}★</td>
       <td><span class="badge badge-${c.status==='Active'?'green':'amber'}">${c.status}</span></td>
@@ -125,7 +125,7 @@ function viewCourse(title, prov, cat, price, enrolled) {
   document.getElementById('mCTitle').textContent    = title;
   document.getElementById('mCProv').textContent     = prov;
   document.getElementById('mCCat').textContent      = cat;
-  document.getElementById('mCPrice').textContent    = 'NRs. ' + price.toLocaleString();
+  document.getElementById('mCPrice').textContent    = 'RM ' + price.toLocaleString();
   document.getElementById('mCEnrolled').textContent = enrolled + ' students';
   document.getElementById('courseModal').classList.add('open');
 }
