@@ -11,7 +11,7 @@
 <body>
 <div class="dash-layout">
   <aside class="sidebar">
-    <div class="sidebar-logo"><img src="../assets/images/eduskilllogo.jpeg" alt="EduSkill" style="height:28px;width:28px;border-radius:6px;object-fit:cover;vertical-align:middle;margin-right:6px"> My Learning</div>
+    <div class="sidebar-logo"><img src="../assets/images/eduskill-logo.png" alt="EduSkill" style="height:30px;width:30px;object-fit:contain;display:inline-block;vertical-align:middle;margin-right:4px"> My Learning</div>
     <div class="sidebar-label">Main</div>
     <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
     <div class="sidebar-label">Courses</div>
@@ -60,6 +60,42 @@
 requireStudent();
 renderCourseGrid();
 function goEnroll(id,title){window.location.href='enroll.html?id='+id+'&title='+encodeURIComponent(title);}
+
+// ── Load live courses from PHP when XAMPP is active ─────────
+(function loadLiveCourses() {
+  fetch('../includes/get_courses.php')
+    .then(r => r.json())
+    .then(data => {
+      if (!data.success || !data.courses || !data.courses.length) return;
+      // Map category to image
+      const catImg = {
+        'Technology': '../assets/images/technology.jpg',
+        'Design'    : '../assets/images/design.jpg',
+        'Business'  : '../assets/images/business.jpg',
+        'Finance'   : '../assets/images/finance.jpg',
+        'Healthcare': '../assets/images/healthcare.jpg',
+      };
+      // Override COURSE_DATA with live DB data then re-render
+      COURSE_DATA.length = 0;
+      data.courses.forEach(c => {
+        COURSE_DATA.push({
+          id      : c.id,
+          title   : c.title,
+          provider: c.provider_name,
+          cat     : c.category,
+          img     : catImg[c.category] || '../assets/images/technology.jpg',
+          level   : c.level,
+          dur     : c.duration,
+          price   : parseFloat(c.price),
+          rating  : parseFloat(c.avg_rating) || 4.5,
+          reviews : parseInt(c.enrolled_count) || 0,
+          desc    : c.description || 'A certified training course.'
+        });
+      });
+      renderCourseGrid();
+    })
+    .catch(() => {}); // keep COURSE_DATA fallback when XAMPP off
+})();
 </script>
 </body>
 </html>

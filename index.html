@@ -374,13 +374,13 @@
     }
     .about-circle {
       width: 120px; height: 120px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      background: white;
       display: flex; align-items: center; justify-content: center;
       box-shadow: 0 12px 36px rgba(201,123,46,0.35);
       animation: float 4s ease-in-out infinite;
     }
     @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
-    .about-circle i { font-size: 3rem; color: white; }
+    .about-circle svg { width: 80px; height: 80px; }
     .about-logo-box h2 { font-family:'Playfair Display',serif; color:var(--primary); font-size:1.9rem; }
     .about-logo-box p { color:var(--text-light); font-size:0.83rem; text-align:center; }
 
@@ -728,7 +728,7 @@
 <div class="nav-wrapper">
   <nav id="navbar">
     <a href="#home" class="nav-logo">
-      <img src="assets/images/eduskilllogo.jpeg" alt="EduSkill" style="height:32px;width:32px;border-radius:8px;object-fit:cover;vertical-align:middle;margin-right:4px">
+      <div class="nav-logo-icon"><img src="assets/images/eduskill-logo.png" alt="EduSkill" style="width:30px;height:30px;object-fit:contain;border-radius:50%;display:block"></div>
       EduSkill
     </a>
 
@@ -836,7 +836,7 @@
     </div>
     <div class="about-grid reveal">
       <div class="about-logo-box">
-        <div class="about-circle"><i class="fas fa-graduation-cap"></i></div>
+        <div class="about-circle"><img src="assets/images/eduskill-logo.png" alt="EduSkill" style="width:80px;height:80px;object-fit:contain"></div>
         <h2>EduSkill</h2>
         <p>Empowering Professionals Since 2024</p>
       </div>
@@ -918,7 +918,7 @@
           <div class="course-footer">
             <div>
               <div class="course-stars">★★★★★ <span style="color:#9a8a6a;font-size:.72rem">(128)</span></div>
-              <div class="course-price">NRs. 1500.0</div>
+              <div class="course-price">RM 1500.0</div>
             </div>
             <button class="btn-enroll">Enroll Now</button>
           </div>
@@ -938,7 +938,7 @@
           <div class="course-footer">
             <div>
               <div class="course-stars">★★★★★ <span style="color:#9a8a6a;font-size:.72rem">(96)</span></div>
-              <div class="course-price">NRs. 1500.0</div>
+              <div class="course-price">RM 1500.0</div>
             </div>
             <button class="btn-enroll">Enroll Now</button>
           </div>
@@ -958,7 +958,7 @@
           <div class="course-footer">
             <div>
               <div class="course-stars">★★★★☆ <span style="color:#9a8a6a;font-size:.72rem">(74)</span></div>
-              <div class="course-price">NRs. 1500.0</div>
+              <div class="course-price">RM 1500.0</div>
             </div>
             <button class="btn-enroll">Enroll Now</button>
           </div>
@@ -1131,7 +1131,7 @@
 <footer>
   <div class="footer-inner">
     <div class="footer-brand">
-      <h3><i class="fas fa-graduation-cap"></i> EduSkill</h3>
+      <h3><img src="assets/images/eduskill-logo.png" alt="EduSkill" style="height:22px;width:22px;object-fit:contain;vertical-align:middle;margin-right:4px"> EduSkill</h3>
       <p>A Ministry of Education initiative connecting professionals with quality training and upskilling opportunities nationwide.</p>
       <div class="footer-socials">
         <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>

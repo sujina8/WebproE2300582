@@ -11,7 +11,7 @@
 <body>
 <div class="nav-wrapper">
   <nav id="navbar">
-    <a href="../index.html" class="nav-logo"><img src="../assets/images/eduskilllogo.jpeg" alt="EduSkill" style="height:32px;width:32px;border-radius:8px;object-fit:cover;vertical-align:middle;margin-right:4px">EduSkill</a>
+    <a href="../index.html" class="nav-logo"><div class="nav-logo-icon"><img src="../assets/images/eduskill-logo.png" alt="EduSkill" style="width:30px;height:30px;object-fit:contain;border-radius:50%;display:block"></div>EduSkill</a>
     <div style="display:flex;gap:10px">
       <a href="login.html" class="btn-outline" style="font-size:.82rem;padding:8px 18px"><i class="fas fa-sign-in-alt"></i> Login</a>
     </div>
@@ -66,68 +66,39 @@
 <script src="../assets/js/Sujina.js"></script>
 <script>
 initNavScroll();
-
-async function doRegister() {
+function doRegister() {
   const fn = document.getElementById('fn').value.trim();
   const ln = document.getElementById('ln').value.trim();
   const em = document.getElementById('email').value.trim();
   const ph = document.getElementById('phone').value.trim();
   const p1 = document.getElementById('pass').value;
   const p2 = document.getElementById('pass2').value;
-
-  if (!fn || !ln || !em || !ph || !p1 || !p2) { showToast('Please fill in all fields.', false); return; }
-  if (!document.getElementById('terms').checked) { showToast('Please accept the Terms.', false); return; }
-  if (p1 !== p2) { showToast('Passwords do not match.', false); return; }
-
-  const btn = document.querySelector('.auth-btn');
-  btn.disabled = true;
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account…';
-
-  try {
-    const res = await fetch('../includes/register_student.php', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        firstName : fn,
-        lastName  : ln,
-        email     : em,
-        phone     : ph,
-        education : document.getElementById('edu').value,
-        dob       : document.getElementById('dob').value,
-        password  : p1,
-      }),
-    });
-    const data = await res.json();
-
+  if (!fn||!ln||!em||!ph||!p1||!p2){showToast('Please fill in all fields.',false);return;}
+  if (!document.getElementById('terms').checked){showToast('Please accept the Terms.',false);return;}
+  const payload = {
+    firstName:fn, lastName:ln, email:em, phone:ph,
+    education:document.getElementById('edu').value,
+    dob:document.getElementById('dob').value,
+    password:p1, confirmPassword:p2,
+  };
+  fetch('../includes/register_student.php', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify(payload)
+  })
+  .then(r => r.json())
+  .then(data => {
     if (data.success) {
-      showToast(data.message || 'Account created! You can now sign in.');
+      showToast('Account created! Redirecting to login…');
       setTimeout(() => window.location.href = 'login.html', 2000);
-    } else {
-      showToast(data.message || 'Registration failed. Please try again.', false);
-      btn.disabled = false;
-      btn.innerHTML = 'Create Account &nbsp;<i class="fas fa-arrow-right"></i>';
-    }
-  } catch (err) {
-    // Fallback to localStorage if PHP backend is unavailable
-    const result = EduAuth.registerStudent({
-      firstName       : fn,
-      lastName        : ln,
-      email           : em,
-      phone           : ph,
-      education       : document.getElementById('edu').value,
-      dob             : document.getElementById('dob').value,
-      password        : p1,
-      confirmPassword : p2,
-    });
+    } else { showToast(data.message||'Registration failed.',false); }
+  })
+  .catch(() => {
+    const result = EduAuth.registerStudent(payload);
     if (result.success) {
-      showToast(result.message);
+      showToast(result.message+' (demo mode)');
       setTimeout(() => window.location.href = 'login.html', 2000);
-    } else {
-      showToast(result.message, false);
-    }
-    btn.disabled = false;
-    btn.innerHTML = 'Create Account &nbsp;<i class="fas fa-arrow-right"></i>';
-  }
+    } else { showToast(result.message,false); }
+  });
 }
 </script>
 </body>

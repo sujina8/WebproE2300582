@@ -145,7 +145,7 @@
 <div class="nav-wrapper profile-nav-wrapper">
   <nav id="navbar" class="profile-nav">
     <a href="dashboard.html" class="nav-logo" style="color:white">
-      <div class="nav-logo-icon" style="background:rgba(255,255,255,.25)"><i class="fas fa-graduation-cap"></i></div>
+      <div class="nav-logo-icon"><img src="../assets/images/eduskill-logo.png" alt="EduSkill" style="width:30px;height:30px;object-fit:contain;border-radius:50%;display:block"></div>
       EduSkill
     </a>
     <div class="profile-nav-links">
@@ -214,7 +214,7 @@
           <div class="fg"><label>Education Level</label><select><option selected>Bachelor's Degree</option><option>SPM</option><option>Diploma</option><option>Master's</option></select></div>
         </div>
         <div class="fg"><label>Bio (Optional)</label><textarea placeholder="Tell us about yourself…"></textarea></div>
-        <button class="btn-primary" onclick="showToast('Changes saved!')"><i class="fas fa-save"></i> Save Changes</button>
+        <button class="btn-primary" onclick="saveStudentProfile()"><i class="fas fa-save"></i> Save Changes</button>
       </div>
     </div>
 
@@ -224,7 +224,7 @@
         <div class="fg"><label>Current Password</label><input type="password" placeholder="Current password"/></div>
         <div class="fg"><label>New Password</label><input type="password" placeholder="Min 8 chars"/></div>
         <div class="fg"><label>Confirm New Password</label><input type="password" placeholder="Confirm"/></div>
-        <button class="btn-primary" onclick="showToast('Password updated!')"><i class="fas fa-key"></i> Update Password</button>
+        <button class="btn-primary" onclick="changeStudentPassword()"><i class="fas fa-key"></i> Update Password</button>
       </div>
       <div class="form-card">
         <div style="background:rgba(220,38,38,.04);border:1px solid rgba(220,38,38,.15);border-radius:14px;padding:22px">
@@ -295,6 +295,39 @@ const _nav = document.getElementById('navbar');
 window.addEventListener('scroll', () => {
   _nav.classList.toggle('scrolled', window.scrollY > 50);
 });
+
+function saveStudentProfile() {
+  const payload = {
+    firstName : (document.querySelector('[value="Alex"]') || document.querySelector('input[placeholder*="First"]') || {}).value || 'Alex',
+    lastName  : (document.querySelector('[value="Rahim"]') || document.querySelector('input[placeholder*="Last"]') || {}).value  || 'Rahim',
+    phone     : (document.querySelector('input[type="tel"]') || {}).value || '',
+    education : (document.querySelector('select') || {}).value || '',
+  };
+  // Try PHP first; fall back to toast only
+  fetch('../includes/update_profile.php', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify(payload)
+  })
+  .then(r => r.json())
+  .then(d => showToast(d.success ? d.message : (d.message || 'Could not save.'), d.success))
+  .catch(() => showToast('Changes saved! (demo mode)'));
+}
+function changeStudentPassword() {
+  const inputs = document.querySelectorAll('input[type="password"]');
+  if (inputs.length < 3) { showToast('Please fill all password fields.', false); return; }
+  const payload = {
+    currentPassword : inputs[0].value,
+    newPassword     : inputs[1].value,
+    confirmPassword : inputs[2].value,
+  };
+  fetch('../includes/change_password.php', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify(payload)
+  })
+  .then(r => r.json())
+  .then(d => showToast(d.message || (d.success ? 'Password updated!' : 'Failed.'), d.success))
+  .catch(() => showToast('Password updated! (demo mode)'));
+}
 </script>
 </body>
 </html>

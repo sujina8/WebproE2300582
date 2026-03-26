@@ -11,7 +11,7 @@
 <body>
 <div class="nav-wrapper" style="top:12px">
   <nav id="navbar">
-    <a href="dashboard.html" class="nav-logo"><img src="../assets/images/eduskilllogo.jpeg" alt="EduSkill" style="height:32px;width:32px;border-radius:8px;object-fit:cover;vertical-align:middle;margin-right:4px">EduSkill</a>
+    <a href="dashboard.html" class="nav-logo"><div class="nav-logo-icon"><img src="../assets/images/eduskill-logo.png" alt="EduSkill" style="width:30px;height:30px;object-fit:contain;border-radius:50%;display:block"></div>EduSkill</a>
     <ul class="nav-links">
       <li><a href="browse.html">Browse</a></li>
       <li><a href="enrolled.html">My Courses</a></li>
@@ -86,7 +86,7 @@
       <div class="enrol-img" id="enrolImg" style="background:linear-gradient(135deg,#667eea,#764ba2)">
         <i id="enrolIcon" class="fas fa-book"></i>
       </div>
-      <div class="enrol-price">NRs. <span id="cardPrice">1,500</span>.00 <span>/ person</span></div>
+      <div class="enrol-price">RM <span id="cardPrice">1,500</span>.00 <span>/ person</span></div>
       <button class="enrol-btn" onclick="document.getElementById('payModal').classList.add('open')">
         <i class="fas fa-lock"></i>&nbsp;Enroll Now – Secure Payment
       </button>
@@ -120,7 +120,7 @@
     <div class="fg"><label>Reference / Last 4 Digits</label><input type="text" id="payRef" placeholder="xxxx" maxlength="4"/></div>
     <div class="modal-footer">
       <button class="btn-outline" onclick="document.getElementById('payModal').classList.remove('open')">Cancel</button>
-      <button class="btn-primary" id="payBtn" onclick="doPayment()"><i class="fas fa-lock"></i> Pay NRs. <span id="payBtnAmt">1,500</span></button>
+      <button class="btn-primary" id="payBtn" onclick="doPayment()"><i class="fas fa-lock"></i> Pay RM <span id="payBtnAmt">1,500</span></button>
     </div>
   </div>
 </div>
@@ -163,7 +163,7 @@ document.getElementById('provAvatar').textContent = initials.toUpperCase();
 document.getElementById('enrolImg').style.background = detail.grad;
 document.getElementById('enrolIcon').className = 'fas ' + detail.icon;
 document.getElementById('cardPrice').textContent    = course.price.toLocaleString();
-document.getElementById('payTitle').textContent     = course.title + ' · NRs. ' + course.price.toLocaleString() + '.00';
+document.getElementById('payTitle').textContent     = course.title + ' · RM ' + course.price.toLocaleString() + '.00';
 document.getElementById('payBtnAmt').textContent    = course.price.toLocaleString();
 document.getElementById('incHours').textContent     = detail.hours;
 document.getElementById('incProjects').textContent  = detail.projects;

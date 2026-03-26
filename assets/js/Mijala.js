@@ -105,6 +105,7 @@ function renderApprovals() {
       </div>
       <span class="badge badge-amber">Pending</span>
       <div class="appr-actions">
+        <button class="btn-outline" style="font-size:.8rem;padding:7px 14px" onclick="viewPendingProvider(${p.id})"><i class="fas fa-eye"></i> View Details</button>
         <button class="btn-approve" onclick="handleApproval(${p.id},'approve')"><i class="fas fa-check"></i> Approve</button>
         <button class="btn-reject"  onclick="handleApproval(${p.id},'reject')"><i class="fas fa-times"></i> Reject</button>
       </div>
@@ -112,15 +113,31 @@ function renderApprovals() {
 }
 
 function handleApproval(id, action) {
-  const p = PENDING_PROVIDERS.find(x => x.id === id);
+  id = String(id);
+  const p = PENDING_PROVIDERS.find(x => String(x.id) === String(id));
   if (!p) return;
-  PENDING_PROVIDERS = PENDING_PROVIDERS.filter(x => x.id !== id);
+  PENDING_PROVIDERS = PENDING_PROVIDERS.filter(x => String(x.id) !== id);
   if (action === 'approve') {
     ALL_PROVIDERS.push({ name: p.name, type: p.type, reg: p.reg, courses: 0, students: 0, status: 'Approved' });
+    // Simulate email notification (UC2)
+    const notif = { to: p.email, subject: 'EduSkill – Application Approved',
+      msg: 'Your provider account has been approved. You may now log in and add courses.',
+      sentAt: new Date().toISOString(), action: 'approved' };
+    const notifs = JSON.parse(localStorage.getItem('edu_notifs')||'[]');
+    notifs.push(notif); localStorage.setItem('edu_notifs', JSON.stringify(notifs));
+    showToast(p.name + ' approved ✓ – notification sent to ' + p.email);
+  } else {
+    const notif = { to: p.email, subject: 'EduSkill – Application Update',
+      msg: 'Your provider application was not approved at this time. Please contact us for more information.',
+      sentAt: new Date().toISOString(), action: 'rejected' };
+    const notifs = JSON.parse(localStorage.getItem('edu_notifs')||'[]');
+    notifs.push(notif); localStorage.setItem('edu_notifs', JSON.stringify(notifs));
+    showToast(p.name + ' rejected ✗ – notification sent to ' + p.email, false);
   }
   renderApprovals();
   renderProviders();
-  showToast(`${p.name} has been ${action === 'approve' ? 'approved ✓' : 'rejected ✗'}.`);
+  const b = document.getElementById('pendBadge');
+  if (b) b.textContent = PENDING_PROVIDERS.length;
 }
 
 /* ── Render providers table ── */
@@ -167,7 +184,7 @@ function renderCourses(statusFilter) {
       <td><strong>${c.title}</strong></td>
       <td>${c.provider}</td>
       <td>${c.cat}</td>
-      <td>NRs.${c.price.toLocaleString()}</td>
+      <td>RM ${c.price.toLocaleString()}</td>
       <td>${c.enrolled}</td>
       <td><span class="badge badge-green">${c.status}</span></td>
       <td><button class="btn-view" onclick="showToast('Viewing course')"><i class="fas fa-eye"></i></button></td>

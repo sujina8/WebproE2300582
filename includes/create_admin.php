@@ -1,22 +1,14 @@
 <?php
-/* ============================================================
-   EduSkill – includes/create_admin.php
-   ONE-TIME SETUP TOOL — run once, then delete this file
-   
-   Visit: http://localhost/eduskill/includes/create_admin.php
-   This creates the admin account with a properly hashed password
-   in the database so the admin login works correctly.
+/*
    
    DEFAULT CREDENTIALS CREATED:
      Email:    admin@mohr.gov.my
      Password: Admin@2025!
-   
-   !! DELETE THIS FILE AFTER RUNNING !!
-   ============================================================ */
+    */
 
 require_once 'db.php';
 
-$name     = 'Officer Hamid';
+$name     = 'Officer Ali';
 $email    = 'admin@mohr.gov.my';
 $password = 'Admin@2025!';
 $role     = 'super_admin';

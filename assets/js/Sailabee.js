@@ -76,12 +76,22 @@ let PROVIDER_COURSES = [
   { id:3, title:'Mobile App Development',     cat:'Technology', icon:'fa-mobile-alt', grad:'linear-gradient(135deg,#a18cd1,#fbc2eb)', dur:'8 Weeks',  price:2000, level:'Intermediate', students:9,  rating:4.7, status:'Active' },
 ];
 
+/* ── Map category name → existing image file ── */
+const CAT_IMG = {
+  'Technology': '../assets/images/technology.jpg',
+  'Design':     '../assets/images/design.jpg',
+  'Business':   '../assets/images/business.jpg',
+  'Finance':    '../assets/images/finance.jpg',
+  'Healthcare': '../assets/images/healthcare.jpg',
+};
+function courseImg(cat) { return CAT_IMG[cat] || '../assets/images/technology.jpg'; }
+
 const PROVIDER_ENROLMENTS = [
-  { student:'Ahmad Faris',  course:'Full-Stack Web Development', date:'02 Jan 2025', status:'Active', pay:'NRs.1,500', progress:75 },
-  { student:'Siti Nabilah', course:'Full-Stack Web Development', date:'05 Jan 2025', status:'Active', pay:'NRs.1,500', progress:40 },
-  { student:'Rajesh Kumar', course:'Python for Data Science',    date:'10 Jan 2025', status:'Active', pay:'NRs.1,800', progress:60 },
-  { student:'Priya Menon',  course:'Mobile App Development',     date:'15 Jan 2025', status:'Active', pay:'NRs.2,000', progress:25 },
-  { student:'Lee Wei Hong', course:'Full-Stack Web Development', date:'20 Jan 2025', status:'Active', pay:'NRs.1,500', progress:90 },
+  { student:'Ahmad Faris',  course:'Full-Stack Web Development', date:'02 Jan 2025', status:'Active', pay:'RM 1,500', progress:75 },
+  { student:'Siti Nabilah', course:'Full-Stack Web Development', date:'05 Jan 2025', status:'Active', pay:'RM 1,500', progress:40 },
+  { student:'Rajesh Kumar', course:'Python for Data Science',    date:'10 Jan 2025', status:'Active', pay:'RM 1,800', progress:60 },
+  { student:'Priya Menon',  course:'Mobile App Development',     date:'15 Jan 2025', status:'Active', pay:'RM 2,000', progress:25 },
+  { student:'Lee Wei Hong', course:'Full-Stack Web Development', date:'20 Jan 2025', status:'Active', pay:'RM 1,500', progress:90 },
 ];
 
 /* ── Render course cards ── */
@@ -90,12 +100,14 @@ function renderCourseCards(containerId) {
   if (!el) return;
   el.innerHTML = PROVIDER_COURSES.map(c => `
     <div class="cm-card">
-      <div class="cm-icon" style="background:none;padding:0;overflow:hidden;border-radius:14px"><img src="${c.img}" alt="${c.cat}" style="width:52px;height:52px;object-fit:cover"/></div>
+      <div class="cm-icon" style="background:none;padding:0;overflow:hidden;border-radius:14px;width:64px;height:64px;flex-shrink:0">
+        <img src="${courseImg(c.cat)}" alt="${c.cat}" style="width:64px;height:64px;object-fit:cover;border-radius:14px"/>
+      </div>
       <div class="cm-info"><h4>${c.title}</h4><p>${c.cat} · ${c.level} · ${c.dur}</p></div>
       <div class="cm-stats">
         <div class="cm-stat"><strong>${c.students}</strong><span>Students</span></div>
         <div class="cm-stat"><strong>${c.rating}★</strong><span>Rating</span></div>
-        <div class="cm-stat"><strong>NRs.${c.price.toLocaleString()}</strong><span>Price</span></div>
+        <div class="cm-stat"><strong>RM ${c.price.toLocaleString()}</strong><span>Price</span></div>
       </div>
       <span class="badge badge-green">${c.status}</span>
       <div class="cm-actions">
@@ -268,4 +280,70 @@ function validateRegisterForm() {
   if (document.getElementById('pass').value !== document.getElementById('pass2').value) { showToast('Passwords do not match.', false); return false; }
   if (!document.getElementById('terms').checked) { showToast('Please accept the Terms.', false); return false; }
   return true;
+}
+
+/* ── UC6: Analytics tab switcher ── */
+function switchAnalytics(tab, btn) {
+  ['enrol','course','revenue'].forEach(t => {
+    var el = document.getElementById('analytics' + t.charAt(0).toUpperCase() + t.slice(1));
+    if (el) el.style.display = t === tab ? '' : 'none';
+  });
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  if (tab === 'course')  renderCourseAnalytics();
+  if (tab === 'revenue') renderRevenueChart();
+  if (tab === 'enrol')   renderProviderChart();
+}
+
+/* ── UC6: Per-course analytics table ── */
+function renderCourseAnalytics() {
+  var el = document.getElementById('courseAnalyticsTable');
+  if (!el) return;
+  var courses = [
+    { title:'Full-Stack Web Development',   enrolled:28, completed:10, rating:4.9, revenue:42000 },
+    { title:'UI/UX Design Fundamentals',    enrolled:20, completed:8,  rating:4.8, revenue:30000 },
+    { title:'Python for Data Science',      enrolled:15, completed:4,  rating:4.9, revenue:27000 },
+  ];
+  el.innerHTML = '<table style="width:100%;border-collapse:collapse;font-size:.85rem">'
+    + '<thead><tr style="border-bottom:2px solid rgba(201,123,46,.15)">'
+    + '<th style="text-align:left;padding:10px 8px;color:var(--text-mid)">Course</th>'
+    + '<th style="text-align:center;padding:10px 8px;color:var(--text-mid)">Enrolled</th>'
+    + '<th style="text-align:center;padding:10px 8px;color:var(--text-mid)">Completed</th>'
+    + '<th style="text-align:center;padding:10px 8px;color:var(--text-mid)">Rating</th>'
+    + '<th style="text-align:right;padding:10px 8px;color:var(--text-mid)">Revenue</th>'
+    + '</tr></thead><tbody>'
+    + courses.map(function(c) {
+        var pct = Math.round(c.completed / c.enrolled * 100);
+        return '<tr style="border-bottom:1px solid rgba(201,123,46,.08)">'
+          + '<td style="padding:12px 8px;font-weight:600">' + c.title + '</td>'
+          + '<td style="padding:12px 8px;text-align:center">' + c.enrolled + '</td>'
+          + '<td style="padding:12px 8px;text-align:center">'
+          +   '<div style="display:flex;align-items:center;gap:6px;justify-content:center">'
+          +   '<div style="width:60px;height:5px;background:var(--cream-dark);border-radius:3px;overflow:hidden">'
+          +   '<div style="height:100%;width:' + pct + '%;background:linear-gradient(90deg,var(--primary),var(--primary-light));border-radius:3px"></div></div>'
+          +   '<span>' + c.completed + '</span></div></td>'
+          + '<td style="padding:12px 8px;text-align:center">⭐ ' + c.rating + '</td>'
+          + '<td style="padding:12px 8px;text-align:right;font-weight:600;color:var(--primary)">RM ' + c.revenue.toLocaleString() + '</td>'
+          + '</tr>';
+      }).join('')
+    + '</tbody></table>';
+}
+
+/* ── UC6: Revenue bar chart ── */
+function renderRevenueChart() {
+  var el = document.getElementById('revenueChart');
+  if (!el) return;
+  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var data   = [4500,7800,6000,10500,14400,9600,7200,12000,8400,6000,9600,3600];
+  var max    = Math.max.apply(null, data);
+  el.innerHTML = data.map(function(v, i) {
+    return '<div class="chart-row">'
+      + '<div class="chart-label">' + months[i] + '</div>'
+      + '<div class="chart-outer"><div class="chart-inner" data-w="' + Math.round(v/max*100) + '" style="width:0;background:linear-gradient(90deg,#16a34a,#4ade80)"></div></div>'
+      + '<div class="chart-val">RM ' + (v/1000).toFixed(1) + 'k</div>'
+      + '</div>';
+  }).join('');
+  setTimeout(function() {
+    el.querySelectorAll('.chart-inner').forEach(function(b) { b.style.width = b.dataset.w + '%'; });
+  }, 300);
 }

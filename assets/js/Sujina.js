@@ -33,15 +33,15 @@ function animateProgressBars() {
 
 /* ── Course carousel / filter ── */
 const COURSE_DATA = [
-  { id:1, title:'Full-Stack Web Development',   provider:'TechPro Academy',    cat:'Technology', img:'assets/images/technology.jpg', level:'Beginner',     dur:'8 Weeks',  price:1500, rating:4.9, reviews:128, desc:'Master HTML, CSS, JavaScript, PHP & MySQL to build complete web applications.' },
-  { id:2, title:'UI/UX Design Fundamentals',    provider:'DesignHub',          cat:'Design',     img:'assets/images/design.jpg',     level:'Intermediate', dur:'6 Weeks',  price:1500, rating:4.8, reviews:96,  desc:'Learn user research, wireframing, and prototyping for great digital experiences.' },
-  { id:3, title:'Digital Marketing Mastery',    provider:'MarketPro Institute', cat:'Business',   img:'assets/images/business.jpg',   level:'Beginner',     dur:'4 Weeks',  price:1500, rating:4.6, reviews:74,  desc:'SEO, social media, and paid ads – build a complete digital marketing skill set.' },
-  { id:4, title:'Python for Data Science',      provider:'TechPro Academy',    cat:'Technology', img:'assets/images/technology.jpg', level:'Intermediate', dur:'10 Weeks', price:1800, rating:4.9, reviews:201, desc:'NumPy, pandas, and machine learning fundamentals for aspiring data scientists.' },
-  { id:5, title:'Financial Accounting Basics',  provider:'FinanceLearn',       cat:'Finance',    img:'assets/images/finance.jpg',    level:'Beginner',     dur:'5 Weeks',  price:1200, rating:4.5, reviews:55,  desc:'Bookkeeping, financial statements, and accounting principles from scratch.' },
-  { id:6, title:'Mobile App Development',       provider:'AppMakers Academy',  cat:'Technology', img:'assets/images/technology.jpg', level:'Intermediate', dur:'8 Weeks',  price:2000, rating:4.7, reviews:88,  desc:'Build cross-platform mobile apps with React Native and Flutter.' },
-  { id:7, title:'Graphic Design Essentials',    provider:'DesignHub',          cat:'Design',     img:'assets/images/design.jpg',     level:'Beginner',     dur:'4 Weeks',  price:950,  rating:4.6, reviews:64,  desc:'Photoshop, Illustrator, and Canva mastery for professional visual design.' },
-  { id:8, title:'Business Communication',       provider:'BizSkill Centre',    cat:'Business',   img:'assets/images/business.jpg',   level:'Beginner',     dur:'3 Weeks',  price:800,  rating:4.4, reviews:42,  desc:'Professional writing, presentation, and workplace communication skills.' },
-  { id:9, title:'First Aid & CPR Certification',provider:'HealthPro Training', cat:'Healthcare', img:'assets/images/healthcare.jpg', level:'Beginner',     dur:'2 Days',   price:350,  rating:4.8, reviews:310, desc:'Government-recognised First Aid and CPR certification course.' },
+  { id:1, title:'Full-Stack Web Development',   provider:'TechPro Academy',    cat:'Technology', img:'../assets/images/technology.jpg', level:'Beginner',     dur:'8 Weeks',  price:1500, rating:4.9, reviews:128, desc:'Master HTML, CSS, JavaScript, PHP & MySQL to build complete web applications.' },
+  { id:2, title:'UI/UX Design Fundamentals',    provider:'DesignHub',          cat:'Design',     img:'../assets/images/design.jpg',     level:'Intermediate', dur:'6 Weeks',  price:1500, rating:4.8, reviews:96,  desc:'Learn user research, wireframing, and prototyping for great digital experiences.' },
+  { id:3, title:'Digital Marketing Mastery',    provider:'MarketPro Institute', cat:'Business',   img:'../assets/images/business.jpg',   level:'Beginner',     dur:'4 Weeks',  price:1500, rating:4.6, reviews:74,  desc:'SEO, social media, and paid ads – build a complete digital marketing skill set.' },
+  { id:4, title:'Python for Data Science',      provider:'TechPro Academy',    cat:'Technology', img:'../assets/images/technology.jpg', level:'Intermediate', dur:'10 Weeks', price:1800, rating:4.9, reviews:201, desc:'NumPy, pandas, and machine learning fundamentals for aspiring data scientists.' },
+  { id:5, title:'Financial Accounting Basics',  provider:'FinanceLearn',       cat:'Finance',    img:'../assets/images/finance.jpg',    level:'Beginner',     dur:'5 Weeks',  price:1200, rating:4.5, reviews:55,  desc:'Bookkeeping, financial statements, and accounting principles from scratch.' },
+  { id:6, title:'Mobile App Development',       provider:'AppMakers Academy',  cat:'Technology', img:'../assets/images/technology.jpg', level:'Intermediate', dur:'8 Weeks',  price:2000, rating:4.7, reviews:88,  desc:'Build cross-platform mobile apps with React Native and Flutter.' },
+  { id:7, title:'Graphic Design Essentials',    provider:'DesignHub',          cat:'Design',     img:'../assets/images/design.jpg',     level:'Beginner',     dur:'4 Weeks',  price:950,  rating:4.6, reviews:64,  desc:'Photoshop, Illustrator, and Canva mastery for professional visual design.' },
+  { id:8, title:'Business Communication',       provider:'BizSkill Centre',    cat:'Business',   img:'../assets/images/business.jpg',   level:'Beginner',     dur:'3 Weeks',  price:800,  rating:4.4, reviews:42,  desc:'Professional writing, presentation, and workplace communication skills.' },
+  { id:9, title:'First Aid & CPR Certification',provider:'HealthPro Training', cat:'Healthcare', img:'../assets/images/healthcare.jpg', level:'Beginner',     dur:'2 Days',   price:350,  rating:4.8, reviews:310, desc:'Government-recognised First Aid and CPR certification course.' },
 ];
 
 let _currentCat = 'all';
@@ -101,7 +101,7 @@ function renderCourseGrid(gridId, searchId, sortId) {
         <div class="c-footer">
           <div>
             <div class="c-stars">${starsHtml(c.rating)} <span style="color:#9a8a6a;font-size:.72rem">(${c.reviews})</span></div>
-            <div class="c-price">NRs. ${c.price.toLocaleString()}.00</div>
+            <div class="c-price">RM ${c.price.toLocaleString()}.00</div>
           </div>
           <button class="btn-enroll" onclick="goEnroll(${c.id},'${c.title.replace(/'/g, "\\'")}')">Enroll Now</button>
         </div>
@@ -236,8 +236,8 @@ function populateReceipt() {
   set('sName', name);
   set('cName', course);
   set('cProv', provider);
-  set('cFee',  'NRs. ' + fee + '.00');
-  setHTML('cTotal', '<strong>NRs. ' + fee + '.00</strong>');
+  set('cFee',  'RM ' + fee + '.00');
+  setHTML('cTotal', '<strong>RM ' + fee + '.00</strong>');
 
   const now = new Date();
   set('rDate', now.toLocaleDateString('en-MY', { day:'2-digit', month:'long', year:'numeric' }));

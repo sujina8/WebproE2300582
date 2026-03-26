@@ -11,7 +11,7 @@
 <body>
 <div class="nav-wrapper">
   <nav id="navbar">
-    <a href="../index.html" class="nav-logo"><img src="../assets/images/eduskilllogo.jpeg" alt="EduSkill" style="height:32px;width:32px;border-radius:8px;object-fit:cover;vertical-align:middle;margin-right:4px">EduSkill</a>
+    <a href="../index.html" class="nav-logo"><div class="nav-logo-icon"><img src="../assets/images/eduskill-logo.png" alt="EduSkill" style="width:30px;height:30px;object-fit:contain;border-radius:50%;display:block"></div>EduSkill</a>
     <a href="login.html" class="btn-outline" style="font-size:.82rem;padding:8px 18px"><i class="fas fa-sign-in-alt"></i> Login</a>
   </nav>
 </div>
@@ -68,6 +68,25 @@
       </div>
     </div>
 
+    <div class="sec-divider">Supporting Documents</div>
+    <p style="font-size:.83rem;color:var(--text-light);margin:-4px 0 14px">Upload your company registration certificate and accreditation documents (PDF, JPG, PNG – max 5MB each).</p>
+    <div class="fg">
+      <label>Company Registration Certificate <span style="color:#e06418">*</span></label>
+      <div class="doc-upload-box" id="docBox1" onclick="document.getElementById('docFile1').click()" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleDocDrop(event,'docFile1','docName1','docBox1')">
+        <i class="fas fa-cloud-upload-alt" style="font-size:1.6rem;color:var(--primary);margin-bottom:8px;display:block"></i>
+        <span id="docName1" style="font-size:.85rem;color:var(--text-mid)">Click or drag &amp; drop to upload</span>
+        <input type="file" id="docFile1" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="showDocName('docFile1','docName1','docBox1')"/>
+      </div>
+    </div>
+    <div class="fg" style="margin-top:12px">
+      <label>Accreditation / Professional Body Certificate <span style="font-size:.78rem;color:var(--text-light)">(optional)</span></label>
+      <div class="doc-upload-box" id="docBox2" onclick="document.getElementById('docFile2').click()" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleDocDrop(event,'docFile2','docName2','docBox2')">
+        <i class="fas fa-cloud-upload-alt" style="font-size:1.6rem;color:var(--primary);margin-bottom:8px;display:block"></i>
+        <span id="docName2" style="font-size:.85rem;color:var(--text-mid)">Click or drag &amp; drop to upload</span>
+        <input type="file" id="docFile2" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="showDocName('docFile2','docName2','docBox2')"/>
+      </div>
+    </div>
+
     <div class="sec-divider">Account Security</div>
     <div class="form-row">
       <div class="fg"><label>Password</label>
@@ -90,58 +109,65 @@
   </div>
 </div>
 
+<style>
+.doc-upload-box{border:2px dashed rgba(201,123,46,.35);border-radius:12px;padding:22px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s}
+.doc-upload-box:hover,.doc-upload-box.drag-over{border-color:var(--primary);background:rgba(201,123,46,.05)}
+.doc-upload-box.has-file{border-color:#16a34a;background:rgba(22,163,74,.05)}
+</style>
 <script src="../assets/js/shared.js"></script>
 <script src="../assets/js/auth.js"></script>
 <script src="../assets/js/Sailabee.js"></script>
 <script>
-async function doRegister() {
+function showDocName(inputId, nameId, boxId) {
+  var f = document.getElementById(inputId).files[0];
+  if (!f) return;
+  document.getElementById(nameId).innerHTML = '<i class="fas fa-file-check" style="color:#16a34a;margin-right:6px"></i>' + f.name;
+  document.getElementById(boxId).classList.add('has-file');
+}
+function handleDocDrop(e, inputId, nameId, boxId) {
+  e.preventDefault();
+  document.getElementById(boxId).classList.remove('drag-over');
+  var f = e.dataTransfer.files[0];
+  if (!f) return;
+  var dt = new DataTransfer(); dt.items.add(f);
+  document.getElementById(inputId).files = dt.files;
+  document.getElementById(nameId).innerHTML = '<i class="fas fa-file-check" style="color:#16a34a;margin-right:6px"></i>' + f.name;
+  document.getElementById(boxId).classList.add('has-file');
+}
+function doRegister() {
+  var docFile1 = document.getElementById('docFile1');
+  if (!docFile1.files.length) { showToast('Please upload your Company Registration Certificate.', false); return; }
   if (!validateRegisterForm()) return;
-
-  const btn = document.querySelector('.auth-btn');
-  btn.disabled = true;
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting…';
-
   const payload = {
-    orgName        : document.getElementById('orgName').value.trim(),
-    regNo          : document.getElementById('regNo').value.trim(),
-    orgType        : document.getElementById('orgType').value,
-    address        : document.getElementById('address').value.trim(),
-    contactName    : document.getElementById('cpName').value.trim(),
-    contactRole    : document.getElementById('cpRole').value.trim(),
-    email          : document.getElementById('email').value.trim(),
-    phone          : document.getElementById('phone').value.trim(),
-    password       : document.getElementById('pass').value,
-    confirmPassword: document.getElementById('pass2').value,
+    orgName    :document.getElementById('orgName').value.trim(),
+    regNo      :document.getElementById('regNo').value.trim(),
+    orgType    :document.getElementById('orgType').value,
+    address    :document.getElementById('address').value.trim(),
+    contactName:document.getElementById('cpName').value.trim(),
+    contactRole:document.getElementById('cpRole').value.trim(),
+    email      :document.getElementById('email').value.trim(),
+    phone      :document.getElementById('phone').value.trim(),
+    password   :document.getElementById('pass').value,
+    confirmPassword:document.getElementById('pass2').value,
   };
-
-  try {
-    const res = await fetch('../includes/register_provider.php', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-    const data = await res.json();
-
+  fetch('../includes/register_provider.php', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify(payload)
+  })
+  .then(r => r.json())
+  .then(data => {
     if (data.success) {
       showToast('Application submitted! Awaiting Ministry approval.');
-      setTimeout(() => window.location.href = 'login.html', 2500);
-    } else {
-      showToast(data.message || 'Registration failed. Please try again.', false);
-      btn.disabled = false;
-      btn.innerHTML = 'Submit Application &nbsp;<i class="fas fa-paper-plane"></i>';
-    }
-  } catch (err) {
-    // Fallback to localStorage if PHP backend is unavailable
+      setTimeout(()=>window.location.href='login.html',2500);
+    } else { showToast(data.message||'Registration failed.',false); }
+  })
+  .catch(() => {
     const result = EduAuth.registerProvider(payload);
     if (result.success) {
-      showToast('Application submitted! Awaiting Ministry approval.');
-      setTimeout(() => window.location.href = 'login.html', 2500);
-    } else {
-      showToast(result.message || 'Registration failed. Please try again.', false);
-    }
-    btn.disabled = false;
-    btn.innerHTML = 'Submit Application &nbsp;<i class="fas fa-paper-plane"></i>';
-  }
+      showToast('Application submitted! Awaiting Ministry approval. (demo mode)');
+      setTimeout(()=>window.location.href='login.html',2500);
+    } else { showToast(result.message||'Registration failed.',false); }
+  });
 }
 </script>
 </body>

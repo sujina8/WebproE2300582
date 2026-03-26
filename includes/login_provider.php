@@ -38,7 +38,7 @@ if (!$provider) {
     exit;
 }
 
-if (!password_verify($pass, $provider['password'])) {
+if ($pass !== $provider['password']) {
     echo json_encode(['success' => false, 'message' => 'Incorrect password. Please try again.']);
     exit;
 }

@@ -11,7 +11,7 @@
 <body>
 <div class="nav-wrapper">
   <nav id="navbar">
-    <a href="../index.html" class="nav-logo"><img src="../assets/images/eduskilllogo.jpeg" alt="EduSkill" style="height:32px;width:32px;border-radius:8px;object-fit:cover;vertical-align:middle;margin-right:4px">EduSkill</a>
+    <a href="../index.html" class="nav-logo"><div class="nav-logo-icon"><img src="../assets/images/eduskill-logo.png" alt="EduSkill" style="width:30px;height:30px;object-fit:contain;border-radius:50%;display:block"></div>EduSkill</a>
     <div style="display:flex;gap:10px">
       <a href="../index.html" class="btn-outline" style="font-size:.82rem;padding:8px 18px"><i class="fas fa-home"></i> Home</a>
     </div>
@@ -67,26 +67,44 @@ function doLogin() {
   const pass  = document.getElementById('pass').value;
   document.getElementById('errMsg').classList.remove('show');
   document.getElementById('pendMsg').classList.remove('show');
-
-  if (!email || !pass) {
-    document.getElementById('errMsg').textContent = 'Please enter your email and password.';
+  if (!email||!pass){
+    document.getElementById('errMsg').textContent='Please enter your email and password.';
     document.getElementById('errMsg').classList.add('show'); return;
   }
-
-  const result = EduAuth.loginProvider(email, pass);
-
-  if (result.success) {
-    showToast('Welcome back, ' + result.name + '!');
-    setTimeout(() => window.location.href = 'dashboard.html', 1100);
-  } else if (result.status === 'pending') {
-    document.getElementById('pendMsg').classList.add('show');
-  } else {
-    document.getElementById('errMsg').textContent = result.message || 'Invalid credentials.';
-    document.getElementById('errMsg').classList.add('show');
-  }
+  fetch('../includes/login_provider.php', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ email, password: pass })
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (data.success) {
+      localStorage.setItem('edu_role', data.role);
+      localStorage.setItem('edu_name', data.name);
+      if (data.id) localStorage.setItem('edu_id', String(data.id));
+      showToast('Welcome back, '+data.name+'!');
+      setTimeout(()=>window.location.href='dashboard.html',1100);
+    } else if (data.status==='pending') {
+      document.getElementById('pendMsg').classList.add('show');
+    } else {
+      document.getElementById('errMsg').textContent=data.message||'Invalid credentials.';
+      document.getElementById('errMsg').classList.add('show');
+    }
+  })
+  .catch(() => {
+    const result = EduAuth.loginProvider(email, pass);
+    if (result.success) {
+      showToast('Welcome back, '+result.name+'! (demo mode)');
+      setTimeout(()=>window.location.href='dashboard.html',1100);
+    } else if (result.status==='pending') {
+      document.getElementById('pendMsg').classList.add('show');
+    } else {
+      document.getElementById('errMsg').textContent=result.message||'Invalid credentials.';
+      document.getElementById('errMsg').classList.add('show');
+    }
+  });
 }
 document.querySelectorAll('input').forEach(i =>
-  i.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); }));
+  i.addEventListener('keydown', e => { if (e.key==='Enter') doLogin(); }));
 </script>
 </body>
 </html>

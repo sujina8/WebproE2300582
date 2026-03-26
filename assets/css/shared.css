@@ -46,7 +46,7 @@ nav {
 }
 nav.scrolled { background: rgba(255,255,255,0.97); box-shadow: 0 12px 40px rgba(201,123,46,0.18); }
 .nav-logo { display:flex; align-items:center; gap:9px; font-family:'Playfair Display',serif; font-size:1.3rem; font-weight:700; color:var(--primary); white-space:nowrap; }
-.nav-logo-icon { width:34px; height:34px; background:var(--primary); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.nav-logo-icon { width:36px; height:36px; background:white; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; padding:2px; overflow:hidden; box-shadow:0 1px 6px rgba(201,123,46,.25); border:2px solid rgba(201,123,46,.18); }
 .nav-logo-icon i { color:white; font-size:.85rem; }
 .nav-links { display:flex; align-items:center; gap:2px; list-style:none; }
 .nav-links a { padding:7px 15px; font-size:.88rem; font-weight:500; color:var(--text-mid); border-radius:50px; transition:color var(--transition),background var(--transition); }

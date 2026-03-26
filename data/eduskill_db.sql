@@ -109,8 +109,9 @@ CREATE TABLE IF NOT EXISTS receipts (
 -- ── Seed Data ──────────────────────────────────────────────
 
 -- Admin account (password: Admin@2025! — bcrypt hash placeholder)
+-- Admin account (password: Admin@2025!)
 INSERT IGNORE INTO admins (name, email, password, role)
-VALUES ('Officer Hamid','admin@mohr.gov.my','$2y$12$ADMIN_HASH_PLACEHOLDER','super_admin');
+VALUES ('Officer Hamid','admin@mohr.gov.my','Admin@2025!','super_admin');
 
 -- Approved provider (password: Provider@123)
 INSERT IGNORE INTO providers
@@ -118,15 +119,15 @@ INSERT IGNORE INTO providers
 VALUES
   ('TechPro Academy Sdn Bhd','SSM-1234567-A','Private Training Centre',
    'No. 12, Jalan Teknologi, 63000 Cyberjaya, Selangor',
-   'provider@techpro.my','$2y$12$PROVIDER_HASH_PLACEHOLDER',
+   'provider@techpro.my','Provider@123',
    "Dato' Ahmad Syafiq",'Director','+603-8888-1234','approved'),
   ('DesignHub MY','SSM-2345678-B','Private Training Centre',
    'Lot 5, Damansara Perdana, 47820 Petaling Jaya',
-   'info@designhub.my','$2y$12$PROVIDER2_HASH',
+   'info@designhub.my','Provider2@123',
    'Nurul Hidayah','Manager','+603-7777-5678','approved'),
   ('MarketPro Institute','SSM-3456789-C','Professional Body',
    'Level 8, Menara KL, 50450 Kuala Lumpur',
-   'contact@marketpro.my','$2y$12$PROVIDER3_HASH',
+   'contact@marketpro.my','Provider3@123',
    'Raj Subramaniam','CEO','+603-2222-9876','approved');
 
 -- Pending provider (password: Pending@123)
@@ -135,12 +136,12 @@ INSERT IGNORE INTO providers
 VALUES
   ('LearnHub Malaysia','SSM-9876543-X','Private Training Centre',
    'No. 3, Jalan Duta, 50480 Kuala Lumpur',
-   'pending@learn.my','$2y$12$PENDING_HASH',
+   'pending@learn.my','Pending@123',
    'Tan Wei Ming','Director','+603-3333-1111','pending');
 
 -- Student (password: Student@123)
 INSERT IGNORE INTO students (first_name, last_name, email, password, phone, education)
-VALUES ('Alex','Rahim','student@eduskill.my','$2y$12$STUDENT_HASH','+60 12-345 6789',"Bachelor's Degree");
+VALUES ('Alex','Rahim','student@eduskill.my','Student@123','+60 12-345 6789',"Bachelor's Degree");
 
 -- Courses
 INSERT IGNORE INTO courses (provider_id, title, category, description, level, duration, price)

@@ -11,7 +11,7 @@
 <body>
 <div class="dash-layout">
   <aside class="sidebar">
-    <div class="sidebar-logo"><img src="../assets/images/eduskilllogo.jpeg" alt="EduSkill" style="height:28px;width:28px;border-radius:6px;object-fit:cover;vertical-align:middle;margin-right:6px"> My Learning</div>
+    <div class="sidebar-logo"><img src="../assets/images/eduskill-logo.png" alt="EduSkill" style="height:30px;width:30px;object-fit:contain;display:inline-block;vertical-align:middle;margin-right:4px"> My Learning</div>
     <div class="sidebar-label">Main</div>
     <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
     <div class="sidebar-label">Courses</div>
@@ -67,6 +67,7 @@
               <td style="display:flex;gap:6px;flex-wrap:wrap">
                 <button class="tbl-btn tbl-green" onclick="showToast('Certificate downloaded!')"><i class="fas fa-certificate"></i> Certificate</button>
                 <button class="tbl-btn tbl-blue" onclick="window.location.href='receipt.html?course=Digital+Marketing+Mastery&fee=1%2C500&provider=MarketPro'"><i class="fas fa-receipt"></i> Receipt</button>
+                <button class="tbl-btn" style="background:#f0f4ff;color:#4f46e5;border:1px solid #c7d2fe" onclick="openReview('Digital Marketing Mastery')"><i class="fas fa-star"></i> Review</button>
               </td>
             </tr>
           </tbody>
@@ -78,6 +79,104 @@
 <script src="../assets/js/shared.js"></script>
 <script src="../assets/js/auth.js"></script>
 <script src="../assets/js/Sujina.js"></script>
-<script>requireStudent();</script>
+<script>requireStudent();
+// ── Load real enrolments from PHP when XAMPP is active ──────
+(function loadEnrolments() {
+  const tbody = document.getElementById('enrolTbody');
+  if (!tbody) return;
+
+  fetch('../includes/get_enrolments.php')
+    .then(r => r.json())
+    .then(data => {
+      if (!data.success || !data.enrolments || !data.enrolments.length) return;
+      // Replace static rows with live data
+      tbody.innerHTML = data.enrolments.map(e => {
+        const d    = new Date(e.enrolled_at);
+        const date = d.toLocaleDateString('en-MY', {day:'2-digit', month:'short', year:'numeric'});
+        const statusBadge = e.status === 'completed'
+          ? '<span class="badge badge-green">Completed</span>'
+          : '<span class="badge badge-blue">In Progress</span>';
+        const actions = e.status === 'completed'
+          ? `<button class="tbl-btn tbl-green" onclick="showToast('Certificate downloaded!')"><i class="fas fa-certificate"></i> Certificate</button>`
+          : `<button class="tbl-btn tbl-default" onclick="window.location.href='learning.html'"><i class="fas fa-play"></i> Continue</button>`;
+        const receiptBtn = e.receipt_no
+          ? `<button class="tbl-btn tbl-blue" onclick="window.location.href='receipt.html?course=${encodeURIComponent(e.title)}&fee=${e.amount_paid}&provider=${encodeURIComponent(e.provider_name)}'"><i class="fas fa-receipt"></i> Receipt</button>`
+          : '';
+        const pct = `<div style="display:flex;align-items:center;gap:8px">
+          <div style="flex:1;height:6px;background:var(--cream-dark);border-radius:3px;overflow:hidden">
+            <div style="height:100%;width:${e.progress}%;background:linear-gradient(90deg,var(--primary),var(--primary-light));border-radius:3px"></div>
+          </div>
+          <span style="font-size:.76rem;font-weight:600;color:var(--primary);white-space:nowrap">${e.progress}%</span></div>`;
+        return `<tr>
+          <td><strong>${e.title}</strong></td>
+          <td>${e.provider_name}</td>
+          <td>${date}</td>
+          <td>${pct}</td>
+          <td>${statusBadge}</td>
+          <td style="display:flex;gap:6px;flex-wrap:wrap">${actions}${receiptBtn}</td>
+        </tr>`;
+      }).join('');
+    })
+    .catch(() => {}); // keep static HTML when XAMPP is off
+})();
+</script>
+
+<!-- Review Modal (UC5) -->
+<div id="reviewModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9999;align-items:center;justify-content:center">
+  <div style="background:white;border-radius:20px;padding:32px;max-width:460px;width:90%;position:relative">
+    <button onclick="closeReview()" style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:1.2rem;cursor:pointer;color:var(--text-light)"><i class="fas fa-times"></i></button>
+    <h3 style="margin:0 0 4px;font-family:'Playfair Display',serif">Write a Review</h3>
+    <p id="reviewCourseName" style="font-size:.85rem;color:var(--text-light);margin:0 0 20px"></p>
+    <label style="font-size:.85rem;font-weight:600;display:block;margin-bottom:8px">Your Rating</label>
+    <div id="starPicker" style="display:flex;gap:6px;margin-bottom:18px;font-size:1.8rem;cursor:pointer">
+      <span onclick="setRating(1)" class="rstar">&#9734;</span>
+      <span onclick="setRating(2)" class="rstar">&#9734;</span>
+      <span onclick="setRating(3)" class="rstar">&#9734;</span>
+      <span onclick="setRating(4)" class="rstar">&#9734;</span>
+      <span onclick="setRating(5)" class="rstar">&#9734;</span>
+    </div>
+    <label style="font-size:.85rem;font-weight:600;display:block;margin-bottom:8px">Your Feedback</label>
+    <textarea id="reviewText" rows="4" placeholder="Share your experience with this course…" style="width:100%;padding:12px;border-radius:10px;border:1.5px solid rgba(201,123,46,.2);font-family:'DM Sans',sans-serif;font-size:.88rem;resize:none;outline:none;box-sizing:border-box"></textarea>
+    <button onclick="submitReview()" style="margin-top:16px;width:100%;background:linear-gradient(135deg,var(--primary),var(--primary-light));color:white;border:none;padding:12px;border-radius:10px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:.92rem;cursor:pointer">
+      <i class="fas fa-paper-plane"></i> Submit Review
+    </button>
+  </div>
+</div>
+<style>
+.rstar{color:#d1d5db;transition:color .15s}
+.rstar.active{color:#f59e0b}
+</style>
+<script>
+var _reviewRating = 0;
+var _reviewCourse = '';
+function openReview(course) {
+  _reviewCourse = course;
+  _reviewRating = 0;
+  document.getElementById('reviewCourseName').textContent = course;
+  document.getElementById('reviewText').value = '';
+  document.querySelectorAll('.rstar').forEach(s => s.classList.remove('active'));
+  document.getElementById('reviewModal').style.display = 'flex';
+}
+function closeReview() { document.getElementById('reviewModal').style.display = 'none'; }
+function setRating(n) {
+  _reviewRating = n;
+  document.querySelectorAll('.rstar').forEach((s,i) => {
+    s.innerHTML = i < n ? '&#9733;' : '&#9734;';
+    i < n ? s.classList.add('active') : s.classList.remove('active');
+  });
+}
+function submitReview() {
+  if (!_reviewRating) { showToast('Please select a star rating.', false); return; }
+  var txt = document.getElementById('reviewText').value.trim();
+  if (!txt) { showToast('Please write your feedback.', false); return; }
+  // Save to localStorage
+  var reviews = JSON.parse(localStorage.getItem('edu_reviews')||'[]');
+  reviews.push({ course: _reviewCourse, rating: _reviewRating, text: txt, date: new Date().toISOString(),
+    student: localStorage.getItem('edu_name')||'Student' });
+  localStorage.setItem('edu_reviews', JSON.stringify(reviews));
+  closeReview();
+  showToast('Review submitted! Thank you for your feedback.');
+}
+</script>
 </body>
 </html>
