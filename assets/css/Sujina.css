@@ -1,3 +1,8 @@
+/*
+   EduSkill – assets/css/Sujina.css
+   Student section styles
+   Author: Sujina
+ */
 :root { --sidebar-w: 240px; }
 
 .dash-layout { display:flex; min-height:100vh; padding-top:96px; }
