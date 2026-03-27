@@ -1,10 +1,3 @@
-/* ============================================================
-   EduSkill – assets/css/Sujina.css
-   STUDENT section styles
-   Author: Sujina
-   ============================================================ */
-
-/* ── Dashboard layout ── */
 :root { --sidebar-w: 240px; }
 
 .dash-layout { display:flex; min-height:100vh; padding-top:96px; }
@@ -80,7 +73,7 @@ tr:hover td { background:#fdf8f2; }
 .tbl-green { background:rgba(22,163,74,0.1); color:#15803d; }
 .tbl-green:hover { background:#16a34a; color:white; }
 
-/* ── Auth (login / register) ── */
+/* Auth (login / register) */
 .auth-wrap { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:100px 20px 40px; background:linear-gradient(135deg,#faf4ec 0%,#f5e8d0 60%,#eedcb8 100%); }
 .auth-card { background:white; border-radius:24px; padding:44px 40px; width:100%; max-width:480px; box-shadow:0 16px 56px rgba(201,123,46,0.15); border:1px solid rgba(201,123,46,0.12); }
 .auth-icon { width:64px; height:64px; border-radius:50%; background:linear-gradient(135deg,var(--primary),var(--primary-light)); display:flex; align-items:center; justify-content:center; margin:0 auto 20px; box-shadow:0 8px 24px rgba(201,123,46,0.3); }
@@ -107,7 +100,7 @@ tr:hover td { background:#fdf8f2; }
 .terms input[type=checkbox] { margin-top:3px; accent-color:var(--primary); }
 .terms a { color:var(--primary); }
 
-/* ── Course browsing cards ── */
+/* Course browsing cards */
 .courses-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:22px; }
 .course-card { background:white; border-radius:var(--radius); border:1px solid rgba(201,123,46,0.1); box-shadow:0 4px 16px rgba(201,123,46,0.07); overflow:hidden; transition:transform var(--transition),box-shadow var(--transition); }
 .course-card:hover { transform:translateY(-6px); box-shadow:0 14px 38px rgba(201,123,46,0.17); }
@@ -128,7 +121,7 @@ tr:hover td { background:#fdf8f2; }
 .btn-enroll { background:var(--primary); color:white; border:none; border-radius:8px; padding:7px 14px; font-size:.76rem; font-weight:600; cursor:pointer; transition:background .2s,transform .2s; font-family:'DM Sans',sans-serif; }
 .btn-enroll:hover { background:var(--primary-dark); transform:translateY(-1px); }
 
-/* ── Learning page ── */
+/* Learning page */
 .learning-wrap { display:grid; grid-template-columns:1fr 320px; gap:24px; padding-top:96px; max-width:1160px; margin:0 auto; padding-left:24px; padding-right:24px; padding-bottom:40px; }
 .lesson-player { background:white; border-radius:var(--radius); border:1px solid rgba(201,123,46,0.1); overflow:hidden; }
 .player-video { background:#1e1a14; height:360px; display:flex; align-items:center; justify-content:center; position:relative; }
@@ -151,7 +144,7 @@ tr:hover td { background:#fdf8f2; }
 .lesson-title { font-size:.85rem; font-weight:500; flex:1; }
 .lesson-dur { font-size:.74rem; color:var(--text-light); }
 
-/* ── Receipt ── */
+/* Receipt */
 .receipt-page { max-width:740px; margin:0 auto; padding:100px 24px 60px; }
 .receipt { background:white; border-radius:20px; overflow:hidden; box-shadow:0 16px 56px rgba(201,123,46,0.15); border:1px solid rgba(201,123,46,0.12); }
 .r-header { background:linear-gradient(135deg,var(--primary),var(--primary-dark)); padding:36px 40px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; }
@@ -181,7 +174,7 @@ tr:hover td { background:#fdf8f2; }
 .r-footer { background:var(--cream); padding:20px 40px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
 .r-footer p { font-size:.78rem; color:var(--text-light); }
 
-/* ── Enrollment detail page ── */
+/* Enrollment detail page */
 .enrol-hero { padding:110px 24px 40px; background:linear-gradient(135deg,#faf4ec,#f0e6d3); }
 .enrol-inner { max-width:1160px; margin:0 auto; display:grid; grid-template-columns:1fr 340px; gap:40px; align-items:start; }
 .enrol-card { background:white; border-radius:20px; padding:28px; border:1px solid rgba(201,123,46,.12); box-shadow:0 12px 40px rgba(201,123,46,.12); position:sticky; top:90px; }
@@ -195,13 +188,13 @@ tr:hover td { background:#fdf8f2; }
 .inc-item { display:flex; align-items:center; gap:8px; font-size:.84rem; color:var(--text-mid); margin-bottom:7px; }
 .inc-item i { color:#16a34a; font-size:.78rem; width:14px; }
 
-/* ── Payment modal extras ── */
+/* Payment modal extras*/
 .pm-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px; }
 .pm-btn { padding:14px; border-radius:12px; border:1.5px solid rgba(201,123,46,.2); background:var(--cream); cursor:pointer; text-align:center; font-size:.82rem; font-weight:500; color:var(--text-mid); transition:all .2s; font-family:'DM Sans',sans-serif; }
 .pm-btn:hover, .pm-btn.active { border-color:var(--primary); background:rgba(201,123,46,.08); color:var(--primary); }
 .pm-btn i { display:block; font-size:1.4rem; margin-bottom:6px; color:var(--primary); }
 
-/* ── Profile page ── */
+/* Profile page*/
 .p-hero { background:linear-gradient(135deg,var(--primary),var(--primary-dark)); padding:100px 24px 50px; }
 .p-inner { max-width:1160px; margin:0 auto; display:flex; align-items:center; gap:24px; flex-wrap:wrap; }
 .big-av { width:80px; height:80px; border-radius:50%; background:rgba(255,255,255,.2); border:3px solid rgba(255,255,255,.5); display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:1.8rem; color:white; flex-shrink:0; }
@@ -213,10 +206,12 @@ tr:hover td { background:#fdf8f2; }
 .p-nav { background:white; border-radius:16px; padding:16px 0; border:1px solid rgba(201,123,46,.1); box-shadow:0 3px 14px rgba(201,123,46,.06); height:fit-content; position:sticky; top:90px; }
 .p-nav a { display:flex; align-items:center; gap:10px; padding:11px 20px; font-size:.87rem; font-weight:500; color:var(--text-mid); transition:background .2s,color .2s; text-decoration:none; border-right:3px solid transparent; }
 .p-nav a i { width:16px; font-size:.85rem; flex-shrink:0; }
+
 /* Tab links – get highlight bar when active or hovered */
 .p-nav a.tab-link:hover,
 .p-nav a.tab-link.active { background:var(--cream); color:var(--primary); border-right-color:var(--primary); }
-/* Utility links (Dashboard, Logout) – subtle hover only, no bar */
+
+/* Utility links (Dashboard, Logout) */
 .p-nav a.util-link { margin-top:2px; }
 .p-nav a.util-link:hover { background:var(--cream); }
 .p-nav .p-nav-divider { height:1px; background:var(--cream-dark); margin:8px 16px; }
@@ -228,7 +223,7 @@ tr:hover td { background:#fdf8f2; }
 .danger-zone h3 { color:#b91c1c; font-size:.95rem; margin-bottom:8px; }
 .danger-zone p { font-size:.84rem; color:var(--text-mid); margin-bottom:14px; }
 
-/* ── Filter bar (browse) ── */
+/*Filter bar (browse)*/
 .page-hero { padding:120px 24px 56px; background:linear-gradient(135deg,#faf4ec 0%,#f5e8d0 55%,#eedcb8 100%); text-align:center; }
 .page-hero h1 { font-family:'Playfair Display',serif; font-size:clamp(1.9rem,4vw,2.8rem); margin-bottom:10px; }
 .page-hero p { color:var(--text-mid); max-width:480px; margin:0 auto 28px; }
@@ -245,7 +240,7 @@ tr:hover td { background:#fdf8f2; }
 .no-results { text-align:center; padding:60px 20px; color:var(--text-light); grid-column:1/-1; }
 .no-results i { font-size:3rem; margin-bottom:12px; display:block; }
 
-/* ── Responsive ── */
+/*Responsive*/
 @media(max-width:900px) { .learning-wrap,.enrol-inner,.p-body { grid-template-columns:1fr } .enrol-card { position:static } .lesson-list { position:static } }
 @media(max-width:768px) { .sidebar { display:none } .dash-main { margin-left:0; max-width:100% } .info-grid { grid-template-columns:1fr } .r-header,.r-body,.r-footer { padding:24px 20px } }
 @media(max-width:580px) { .stat-grid { grid-template-columns:1fr 1fr } .p-body { grid-template-columns:1fr } .p-nav { position:static; display:flex; overflow-x:auto; padding:10px; gap:4px } .p-nav a { white-space:nowrap; border-right:none!important; border-bottom:none!important; border-radius:50px; padding:8px 14px } .p-nav .p-nav-divider { display:none } }
