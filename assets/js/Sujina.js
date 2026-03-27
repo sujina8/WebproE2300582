@@ -268,7 +268,7 @@ function initNavScroll() {
   }
 }
 
-/* ── Toast ── */
+/*Toast*/
 function showToast(msg, ok = true) {
   let t = document.getElementById('toast');
   if (!t) {
@@ -282,11 +282,11 @@ function showToast(msg, ok = true) {
   setTimeout(() => t.classList.remove('show'), 3400);
 }
 
-/* ── Tab switcher (profile page) ── */
+/*Tab switcher (profile page)*/
 function switchTab(name, el, prefix) {
   const pre = prefix || 'pane';
   document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-  // Only remove active from tab-link elements — never touch util-links
+  
   document.querySelectorAll('.p-nav a.tab-link').forEach(a => a.classList.remove('active'));
   const pane = document.getElementById(pre + '-' + name);
   if (pane) pane.classList.add('active');
