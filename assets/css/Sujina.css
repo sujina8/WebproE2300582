@@ -223,25 +223,3 @@ tr:hover td { background:#fdf8f2; }
 .danger-zone h3 { color:#b91c1c; font-size:.95rem; margin-bottom:8px; }
 .danger-zone p { font-size:.84rem; color:var(--text-mid); margin-bottom:14px; }
 
-/*Filter bar (browse)*/
-.page-hero { padding:120px 24px 56px; background:linear-gradient(135deg,#faf4ec 0%,#f5e8d0 55%,#eedcb8 100%); text-align:center; }
-.page-hero h1 { font-family:'Playfair Display',serif; font-size:clamp(1.9rem,4vw,2.8rem); margin-bottom:10px; }
-.page-hero p { color:var(--text-mid); max-width:480px; margin:0 auto 28px; }
-.search-bar { display:flex; max-width:520px; margin:0 auto; background:white; border-radius:50px; border:1.5px solid rgba(201,123,46,.2); box-shadow:0 8px 28px rgba(201,123,46,.1); overflow:hidden; }
-.search-bar input { flex:1; padding:14px 20px; border:none; outline:none; font-family:'DM Sans',sans-serif; font-size:.92rem; }
-.search-bar button { background:var(--primary); color:white; border:none; padding:0 24px; font-weight:600; cursor:pointer; font-family:'DM Sans',sans-serif; transition:background .2s; }
-.search-bar button:hover { background:var(--primary-dark); }
-.filter-bar { display:flex; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:28px; }
-.filter-chip { padding:8px 16px; border-radius:50px; border:1.5px solid rgba(201,123,46,.2); background:white; font-size:.82rem; font-weight:500; cursor:pointer; color:var(--text-mid); transition:all .2s; }
-.filter-chip.active, .filter-chip:hover { background:var(--primary); color:white; border-color:var(--primary); }
-.filter-bar select { padding:9px 14px; border-radius:50px; border:1.5px solid rgba(201,123,46,.2); background:white; font-family:'DM Sans',sans-serif; font-size:.85rem; color:var(--text-mid); outline:none; cursor:pointer; }
-.results-count { margin-left:auto; font-size:.85rem; color:var(--text-light); }
-.courses-section { padding:48px 24px 60px; max-width:1160px; margin:0 auto; }
-.no-results { text-align:center; padding:60px 20px; color:var(--text-light); grid-column:1/-1; }
-.no-results i { font-size:3rem; margin-bottom:12px; display:block; }
-
-/*Responsive*/
-@media(max-width:900px) { .learning-wrap,.enrol-inner,.p-body { grid-template-columns:1fr } .enrol-card { position:static } .lesson-list { position:static } }
-@media(max-width:768px) { .sidebar { display:none } .dash-main { margin-left:0; max-width:100% } .info-grid { grid-template-columns:1fr } .r-header,.r-body,.r-footer { padding:24px 20px } }
-@media(max-width:580px) { .stat-grid { grid-template-columns:1fr 1fr } .p-body { grid-template-columns:1fr } .p-nav { position:static; display:flex; overflow-x:auto; padding:10px; gap:4px } .p-nav a { white-space:nowrap; border-right:none!important; border-bottom:none!important; border-radius:50px; padding:8px 14px } .p-nav .p-nav-divider { display:none } }
-@media print { .receipt-page { padding:0 } .receipt { box-shadow:none; border:none; border-radius:0 } }
