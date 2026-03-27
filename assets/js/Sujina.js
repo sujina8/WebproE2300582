@@ -1,10 +1,10 @@
-/* ============================================================
+/* 
    EduSkill – assets/js/Sujina.js
    STUDENT JavaScript utilities
    Author: Sujina
-   ============================================================ */
+   */
 
-/* ── Auth guard: call on every student page ── */
+/*Auth guard: call on every student page*/
 function requireStudent() {
   if (localStorage.getItem('edu_role') !== 'student') {
     window.location.href = '../student/login.html';
@@ -13,7 +13,7 @@ function requireStudent() {
   return true;
 }
 
-/* ── Set welcome text in dashboard ── */
+/*  Set welcome text in dashboard */
 function setStudentWelcome(nameElId, avatarElId) {
   const name = localStorage.getItem('edu_name') || 'Student';
   const el = document.getElementById(nameElId);
@@ -22,7 +22,7 @@ function setStudentWelcome(nameElId, avatarElId) {
   if (av) av.textContent = name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
 }
 
-/* ── Animate progress bars ── */
+/*Animate progress bars*/
 function animateProgressBars() {
   setTimeout(() => {
     document.querySelectorAll('.prog-fill[data-w]').forEach(el => {
@@ -31,7 +31,7 @@ function animateProgressBars() {
   }, 400);
 }
 
-/* ── Course carousel / filter ── */
+/*Course filter*/
 const COURSE_DATA = [
   { id:1, title:'Full-Stack Web Development',   provider:'TechPro Academy',    cat:'Technology', img:'../assets/images/technology.jpg', level:'Beginner',     dur:'8 Weeks',  price:1500, rating:4.9, reviews:128, desc:'Master HTML, CSS, JavaScript, PHP & MySQL to build complete web applications.' },
   { id:2, title:'UI/UX Design Fundamentals',    provider:'DesignHub',          cat:'Design',     img:'../assets/images/design.jpg',     level:'Intermediate', dur:'6 Weeks',  price:1500, rating:4.8, reviews:96,  desc:'Learn user research, wireframing, and prototyping for great digital experiences.' },
@@ -113,7 +113,7 @@ function goEnroll(id, title) {
   window.location.href = 'enroll.html?id=' + id + '&title=' + encodeURIComponent(title);
 }
 
-/* ── Course extra details (icon, gradient, outcomes, curriculum) ── */
+/*Course extra details (icon, gradient, outcomes, curriculum)*/
 const COURSE_DETAILS = {
   1: {
     icon:'fa-code', grad:'linear-gradient(135deg,#667eea,#764ba2)',
@@ -189,7 +189,7 @@ const COURSE_DETAILS = {
   },
 };
 
-/* ── Password strength ── */
+/*Password strength*/
 function checkPasswordStrength(val, barId) {
   let s = 0;
   if (val.length >= 8) s++;
@@ -202,7 +202,7 @@ function checkPasswordStrength(val, barId) {
   bar.style.background = ['#dc2626','#f59e0b','#22c55e','#16a34a'][s - 1] || 'transparent';
 }
 
-/* ── Toggle password visibility ── */
+/*Toggle password visibility*/
 function togglePw(inputId, btn) {
   const inp = document.getElementById(inputId);
   if (!inp) return;
@@ -210,7 +210,7 @@ function togglePw(inputId, btn) {
   else { inp.type = 'password'; btn.innerHTML = '<i class="fas fa-eye"></i>'; }
 }
 
-/* ── Lesson player (learning page) ── */
+/*Lesson player (learning page)*/
 function selectLesson(el, title, desc) {
   document.querySelectorAll('.lesson-item').forEach(li => li.classList.remove('active'));
   el.classList.add('active');
@@ -221,7 +221,7 @@ function selectLesson(el, title, desc) {
   showToast('Now playing: ' + title);
 }
 
-/* ── Receipt page ── */
+/*Receipt page*/
 function populateReceipt() {
   const params   = new URLSearchParams(window.location.search);
   const courseId = parseInt(params.get('id')) || 0;
@@ -255,7 +255,7 @@ function populateReceipt() {
   }
 }
 
-/* ── Navbar scroll shadow ── */
+/*Navbar scroll shadow*/
 function initNavScroll() {
   window.addEventListener('scroll', () => {
     const nb = document.getElementById('navbar');
@@ -293,23 +293,3 @@ function switchTab(name, el, prefix) {
   if (el)   el.classList.add('active');
 }
 
-/* ── Enroll modal / payment ── */
-function selectPayMethod(btn) {
-  document.querySelectorAll('.pm-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-}
-
-function processPayment(courseTitle, fee, provider, courseId) {
-  const name = (document.getElementById('payName') || {}).value?.trim();
-  const ref  = (document.getElementById('payRef')  || {}).value?.trim();
-  if (!name || !ref) { showToast('Please fill in your payment details.', false); return; }
-  const modal = document.getElementById('payModal');
-  if (modal) modal.classList.remove('open');
-  showToast('Processing payment…');
-  setTimeout(() => {
-    window.location.href = 'receipt.html?id=' + (courseId || '') +
-      '&course=' + encodeURIComponent(courseTitle) +
-      '&fee=' + encodeURIComponent(fee) +
-      '&provider=' + encodeURIComponent(provider);
-  }, 1500);
-}
