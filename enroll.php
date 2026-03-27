@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Student Registration – EduSkill</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="../assets/css/shared.css"/>
+  <link rel="stylesheet" href="../assets/css/Sujina.css"/>
+</head>
+<body>
+<div class="nav-wrapper">
+  <nav id="navbar">
+    <a href="../index.php" class="nav-logo"><div class="nav-logo-icon"><img src="../assets/images/eduskill-logo.png" alt="EduSkill" style="width:30px;height:30px;object-fit:contain;border-radius:50%;display:block"></div>EduSkill</a>
+    <div style="display:flex;gap:10px">
+      <a href="login.php" class="btn-outline" style="font-size:.82rem;padding:8px 18px"><i class="fas fa-sign-in-alt"></i> Login</a>
+    </div>
+  </nav>
+</div>
+
+<div class="auth-wrap" style="align-items:flex-start;padding-top:100px;">
+  <div class="auth-card" style="max-width:560px">
+    <div class="auth-icon"><i class="fas fa-user-plus"></i></div>
+    <h2>Student Registration</h2>
+    <p class="sub">Create your free account and start learning today</p>
+
+    <div class="form-row">
+      <div class="fg"><label>First Name</label><div class="input-wrap"><i class="fas fa-user prefix"></i><input type="text" id="fn" placeholder="Ahmad"/></div></div>
+      <div class="fg"><label>Last Name</label><div class="input-wrap"><i class="fas fa-user prefix"></i><input type="text" id="ln" placeholder="Faris"/></div></div>
+    </div>
+    <div class="fg"><label>Email Address</label><div class="input-wrap"><i class="fas fa-envelope prefix"></i><input type="email" id="email" placeholder="ahmad@example.com"/></div></div>
+    <div class="fg"><label>Phone Number</label><div class="input-wrap"><i class="fas fa-phone prefix"></i><input type="tel" id="phone" placeholder="+60 12-345 6789"/></div></div>
+    <div class="form-row">
+      <div class="fg"><label>Date of Birth</label><div class="input-wrap"><i class="fas fa-calendar prefix"></i><input type="date" id="dob"/></div></div>
+      <div class="fg"><label>Education Level</label>
+        <div class="input-wrap"><i class="fas fa-graduation-cap prefix"></i>
+          <select id="edu">
+            <option value="">Select level</option>
+            <option>SPM / O-Level</option><option>STPM / A-Level</option>
+            <option>Diploma</option><option>Bachelor's Degree</option><option>Master's / PhD</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="fg">
+      <label>Password</label>
+      <div class="input-wrap">
+        <i class="fas fa-lock prefix"></i>
+        <input type="password" id="pass" placeholder="Min 8 chars, 1 uppercase, 1 number" oninput="checkPasswordStrength(this.value,'pwBar')"/>
+        <button class="eye-btn" onclick="togglePw('pass',this)" type="button"><i class="fas fa-eye"></i></button>
+      </div>
+      <div class="pw-strength"><div class="pw-bar" id="pwBar"></div></div>
+    </div>
+    <div class="fg"><label>Confirm Password</label><div class="input-wrap"><i class="fas fa-lock prefix"></i><input type="password" id="pass2" placeholder="Re-enter password"/></div></div>
+    <div class="terms">
+      <input type="checkbox" id="terms"/>
+      <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+    </div>
+    <button class="auth-btn" onclick="doRegister()">Create Account &nbsp;<i class="fas fa-arrow-right"></i></button>
+    <div class="auth-footer">Already have an account? <a href="login.php">Sign in</a></div>
+  </div>
+</div>
+
+<script src="../assets/js/shared.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/Sujina.js"></script>
+<script>
+initNavScroll();
+function doRegister() {
+  const fn = document.getElementById('fn').value.trim();
+  const ln = document.getElementById('ln').value.trim();
+  const em = document.getElementById('email').value.trim();
+  const ph = document.getElementById('phone').value.trim();
+  const p1 = document.getElementById('pass').value;
+  const p2 = document.getElementById('pass2').value;
+  if (!fn||!ln||!em||!ph||!p1||!p2){showToast('Please fill in all fields.',false);return;}
+  if (!document.getElementById('terms').checked){showToast('Please accept the Terms.',false);return;}
+  const payload = {
+    firstName:fn, lastName:ln, email:em, phone:ph,
+    education:document.getElementById('edu').value,
+    dob:document.getElementById('dob').value,
+    password:p1, confirmPassword:p2,
+  };
+  fetch('../includes/register_student.php', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify(payload)
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (data.success) {
+      showToast('Account created! Redirecting to login…');
+      setTimeout(() => window.location.href = 'login.php', 2000);
+    } else { showToast(data.message||'Registration failed.',false); }
+  })
+  .catch(() => {
+    const result = EduAuth.registerStudent(payload);
+    if (result.success) {
+      showToast(result.message+' (demo mode)');
+      setTimeout(() => window.location.href = 'login.php', 2000);
+    } else { showToast(result.message,false); }
+  });
+}
+</script>
+</body>
+</html>

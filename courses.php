@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Course Teaching – EduSkill</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="../assets/css/shared.css"/>
+  <link rel="stylesheet" href="../assets/css/Sailabee.css"/>
+</head>
+<body>
+<div class="dash-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo"><i class="fas fa-chalkboard-teacher"></i> Provider</div>
+    <div class="sidebar-label">Main</div>
+    <a href="dashboard.php"><i class="fas fa-home"></i> Dashboard</a>
+    <div class="sidebar-label">Teaching</div>
+    <a href="courses.php"><i class="fas fa-book"></i> My Courses</a>
+    <a href="enrolments.php"><i class="fas fa-users"></i> Student Enrolments</a>
+    <a href="materials.php"><i class="fas fa-folder-open"></i> Teaching Materials</a>
+    <a href="teaching.php" class="active"><i class="fas fa-chalkboard"></i> Course Teaching</a>
+    <div class="sidebar-label">Account</div>
+    <a href="profile.php"><i class="fas fa-building"></i> Organisation</a>
+    <a href="login.php" class="logout-link" onclick="EduAuth.logout('login.php')"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  </aside>
+  <main class="dash-main">
+    <div class="nav-wrapper" style="position:fixed;top:16px;left:var(--sidebar-w);right:0;transform:none;width:calc(100% - var(--sidebar-w) - 32px);max-width:900px">
+      <nav id="navbar" style="border-radius:20px">
+        <span class="nav-logo" style="font-size:1rem;color:#5b6cf6"><i class="fas fa-chalkboard" style="color:#5b6cf6;margin-right:6px"></i>Course Teaching</span>
+        <a href="login.php" onclick="EduAuth.logout('login.php')" class="btn-outline" style="font-size:.8rem;padding:7px 16px;border-color:#5b6cf6;color:#5b6cf6"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </nav>
+    </div>
+
+    <div style="margin-top:56px">
+      <!-- Course selector -->
+      <div class="form-card">
+        <h3><i class="fas fa-book" style="color:#5b6cf6;margin-right:8px"></i>Select Course to Manage</h3>
+        <div class="form-row">
+          <div class="fg">
+            <label>Course</label>
+            <select id="activeCourse" onchange="loadCourse(this.value)">
+              <option value="1">Full-Stack Web Development</option>
+              <option value="2">Python for Data Science</option>
+              <option value="3">Mobile App Development</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>Status</label>
+            <select id="courseStatus">
+              <option value="active">Active – Visible to students</option>
+              <option value="draft">Draft – Hidden from students</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn-primary" style="background:#5b6cf6;box-shadow:none;font-size:.85rem" onclick="showToast('Course settings saved!')"><i class="fas fa-save"></i> Save Settings</button>
+          <button class="btn-outline" style="border-color:#5b6cf6;color:#5b6cf6;font-size:.85rem" onclick="showToast('Preview opened in new tab.')"><i class="fas fa-eye"></i> Preview as Student</button>
+        </div>
+      </div>
+
+      <!-- Course overview card -->
+      <div class="form-card" id="courseOverviewCard">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;flex-wrap:wrap">
+          <div style="width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="fas fa-code" style="font-size:1.4rem;color:white"></i></div>
+          <div>
+            <h3 id="courseNameDisplay" style="font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:0">Full-Stack Web Development</h3>
+            <p style="font-size:.83rem;color:var(--text-light)">28 students enrolled &nbsp;·&nbsp; 8 Weeks &nbsp;·&nbsp; Beginner</p>
+          </div>
+          <div style="margin-left:auto;display:flex;gap:10px">
+            <div style="text-align:center"><div style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:#5b6cf6">28</div><div style="font-size:.75rem;color:var(--text-light)">Students</div></div>
+            <div style="text-align:center"><div style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:#16a34a">4.9★</div><div style="font-size:.75rem;color:var(--text-light)">Rating</div></div>
+            <div style="text-align:center"><div style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--primary)">75%</div><div style="font-size:.75rem;color:var(--text-light)">Avg. Progress</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lesson builder -->
+      <div class="lesson-editor">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+          <h3><i class="fas fa-list-ol" style="color:#5b6cf6;margin-right:8px"></i>Lesson Builder</h3>
+          <span style="font-size:.82rem;color:var(--text-light)">Drag lessons to reorder</span>
+        </div>
+        <div id="lessonList"></div>
+      </div>
+
+      <!-- Add new lesson -->
+      <div class="form-card">
+        <h3><i class="fas fa-plus-circle" style="color:#5b6cf6;margin-right:8px"></i>Add New Lesson</h3>
+        <div class="form-row">
+          <div class="fg"><label>Lesson Title</label><input type="text" id="newLessonTitle" placeholder="e.g. Week 5 – PHP Fundamentals"/></div>
+          <div class="fg">
+            <label>Lesson Type</label>
+            <select id="newLessonType">
+              <option>Video</option><option>Quiz</option>
+              <option>Exercise</option><option>Reading</option><option>Assignment</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="fg"><label>Duration</label><input type="text" id="newLessonDur" placeholder="e.g. 45 min"/></div>
+          <div class="fg">
+            <label>Visibility</label>
+            <select><option>Visible to enrolled students</option><option>Draft – Hidden</option></select>
+          </div>
+        </div>
+        <div class="fg"><label>Lesson Description</label><textarea placeholder="What will students learn in this lesson?"></textarea></div>
+        <button class="btn-primary" style="background:#5b6cf6;box-shadow:none" onclick="addLesson()"><i class="fas fa-plus"></i> Add Lesson</button>
+      </div>
+
+      <!-- Announcements -->
+      <div class="form-card">
+        <h3><i class="fas fa-bullhorn" style="color:#5b6cf6;margin-right:8px"></i>Post Announcement</h3>
+        <div class="fg"><label>Announcement Title</label><input type="text" id="annTitle" placeholder="e.g. Assignment deadline reminder"/></div>
+        <div class="fg"><label>Message</label><textarea id="annMsg" placeholder="Write your announcement to students…"></textarea></div>
+        <button class="btn-primary" style="background:#5b6cf6;box-shadow:none" onclick="postAnnouncement()"><i class="fas fa-paper-plane"></i> Send to All Students</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="../assets/js/shared.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/Sailabee.js"></script>
+<script>
+requireProvider();
+
+renderLessons('lessonList');
+
+const COURSE_INFO = {
+  '1': { name:'Full-Stack Web Development',  icon:'fa-code',       grad:'linear-gradient(135deg,#667eea,#764ba2)', students:28, rating:'4.9', progress:'75%' },
+  '2': { name:'Python for Data Science',     icon:'fa-python',     grad:'linear-gradient(135deg,#43e97b,#38f9d7)', students:15, rating:'4.8', progress:'60%' },
+  '3': { name:'Mobile App Development',      icon:'fa-mobile-alt', grad:'linear-gradient(135deg,#a18cd1,#fbc2eb)', students:9,  rating:'4.7', progress:'35%' },
+};
+
+function loadCourse(id) {
+  const c = COURSE_INFO[id] || COURSE_INFO['1'];
+  document.getElementById('courseNameDisplay').textContent = c.name;
+  const card = document.getElementById('courseOverviewCard');
+  card.querySelector('div[style*="background:linear"]').style.background = c.grad;
+  card.querySelector('.fa-code, .fa-python, .fa-mobile-alt').className = 'fas ' + c.icon + ' fa-fw';
+  showToast('Loaded: ' + c.name);
+}
+
+function postAnnouncement() {
+  const t = document.getElementById('annTitle').value.trim();
+  const m = document.getElementById('annMsg').value.trim();
+  if (!t || !m) { showToast('Please fill in both fields.', false); return; }
+  document.getElementById('annTitle').value = '';
+  document.getElementById('annMsg').value   = '';
+  showToast('Announcement sent to all students!');
+}
+</script>
+</body>
+</html>

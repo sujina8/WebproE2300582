@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>My Courses – EduSkill</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="../assets/css/shared.css"/>
+  <link rel="stylesheet" href="../assets/css/Sailabee.css"/>
+</head>
+<body>
+<div class="dash-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo"><i class="fas fa-chalkboard-teacher"></i> Provider</div>
+    <div class="sidebar-label">Main</div>
+    <a href="dashboard.php"><i class="fas fa-home"></i> Dashboard</a>
+    <div class="sidebar-label">Courses</div>
+    <a href="courses.php" class="active"><i class="fas fa-book"></i> My Courses</a>
+    <a href="add-course.php"><i class="fas fa-plus-circle"></i> Add Course</a>
+    <a href="materials.php"><i class="fas fa-folder-open"></i> Teaching Materials</a>
+    <a href="teaching.php"><i class="fas fa-chalkboard"></i> Course Teaching</a>
+    <div class="sidebar-label">Students</div>
+    <a href="enrolments.php"><i class="fas fa-users"></i> Enrolments</a>
+    <div class="sidebar-label">Account</div>
+    <a href="profile.php"><i class="fas fa-building"></i> Organisation</a>
+    <a href="login.php" class="logout-link" onclick="EduAuth.logout('login.php')"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  </aside>
+  <main class="dash-main">
+    <div class="nav-wrapper" style="position:fixed;top:16px;left:var(--sidebar-w);right:0;transform:none;width:calc(100% - var(--sidebar-w) - 32px);max-width:900px">
+      <nav id="navbar" style="border-radius:20px">
+        <span class="nav-logo" style="font-size:1rem;color:var(--provider-accent)"><i class="fas fa-book"></i> &nbsp;My Courses</span>
+        <a href="add-course.php" class="btn-primary" style="font-size:.82rem;padding:9px 18px"><i class="fas fa-plus"></i> Add Course</a>
+      </nav>
+    </div>
+    <div style="margin-top:56px">
+      <div class="stat-grid" style="margin-bottom:24px">
+        <div class="stat-box"><div class="sb-icon"><i class="fas fa-book"></i></div><div class="sb-val">3</div><div class="sb-label">Active Courses</div></div>
+        <div class="stat-box"><div class="sb-icon green"><i class="fas fa-users"></i></div><div class="sb-val">52</div><div class="sb-label">Total Enrolments</div></div>
+        <div class="stat-box"><div class="sb-icon amber"><i class="fas fa-star"></i></div><div class="sb-val">4.8</div><div class="sb-label">Avg. Rating</div></div>
+        <div class="stat-box"><div class="sb-icon"><i class="fas fa-coins"></i></div><div class="sb-val">RM 78k</div><div class="sb-label">Revenue</div></div>
+      </div>
+      <div id="courseList"></div>
+    </div>
+  </main>
+</div>
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <h3>Edit Course</h3>
+    <div class="fg"><label>Course Title</label><input type="text" id="editTitle"/></div>
+    <div class="form-row">
+      <div class="fg"><label>Duration</label><input type="text" id="editDur"/></div>
+      <div class="fg"><label>Price (RM )</label><input type="number" id="editPrice"/></div>
+    </div>
+    <div class="fg"><label>Description</label><textarea id="editDesc" style="padding:11px 14px;border-radius:10px;border:1.5px solid rgba(201,123,46,.2);background:var(--cream);font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none;resize:vertical;min-height:80px;width:100%"></textarea></div>
+    <div class="modal-footer">
+      <button class="btn-outline" onclick="document.getElementById('editModal').classList.remove('open')">Cancel</button>
+      <button class="btn-primary" onclick="saveEdit()">Save Changes</button>
+    </div>
+  </div>
+</div>
+<script src="../assets/js/shared.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/Sailabee.js"></script>
+<script>requireProvider(); renderCourseCards('courseList');</script>
+</body></html>

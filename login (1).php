@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Teaching Materials – EduSkill</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="../assets/css/shared.css"/>
+  <link rel="stylesheet" href="../assets/css/Sailabee.css"/>
+</head>
+<body>
+<div class="dash-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo"><i class="fas fa-chalkboard-teacher"></i> Provider</div>
+    <div class="sidebar-label">Main</div>
+    <a href="dashboard.php"><i class="fas fa-home"></i> Dashboard</a>
+    <div class="sidebar-label">Teaching</div>
+    <a href="courses.php"><i class="fas fa-book"></i> My Courses</a>
+    <a href="enrolments.php"><i class="fas fa-users"></i> Student Enrolments</a>
+    <a href="materials.php" class="active"><i class="fas fa-folder-open"></i> Teaching Materials</a>
+    <a href="teaching.php"><i class="fas fa-chalkboard"></i> Course Teaching</a>
+    <div class="sidebar-label">Account</div>
+    <a href="profile.php"><i class="fas fa-building"></i> Organisation</a>
+    <a href="login.php" class="logout-link" onclick="EduAuth.logout('login.php')"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  </aside>
+  <main class="dash-main">
+    <div class="nav-wrapper" style="position:fixed;top:16px;left:var(--sidebar-w);right:0;transform:none;width:calc(100% - var(--sidebar-w) - 32px);max-width:900px">
+      <nav id="navbar" style="border-radius:20px">
+        <span class="nav-logo" style="font-size:1rem;color:#5b6cf6"><i class="fas fa-folder-open" style="color:#5b6cf6;margin-right:6px"></i>Teaching Materials</span>
+        <a href="login.php" onclick="EduAuth.logout('login.php')" class="btn-outline" style="font-size:.8rem;padding:7px 16px;border-color:#5b6cf6;color:#5b6cf6"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </nav>
+    </div>
+
+    <div style="margin-top:56px">
+      <!-- Upload zone -->
+      <div class="form-card">
+        <h3><i class="fas fa-cloud-upload-alt" style="color:#5b6cf6;margin-right:8px"></i>Upload New Material</h3>
+        <div class="form-row" style="margin-bottom:14px">
+          <div class="fg">
+            <label>Material Title</label>
+            <input type="text" id="matTitle" placeholder="e.g. Week 4 – JS Lecture Slides"/>
+          </div>
+          <div class="fg">
+            <label>Course</label>
+            <select id="matCourse">
+              <option>Full-Stack Web Development</option>
+              <option>Python for Data Science</option>
+              <option>Mobile App Development</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row" style="margin-bottom:14px">
+          <div class="fg">
+            <label>Material Type</label>
+            <select id="matType">
+              <option>PDF</option>
+              <option>Video</option>
+              <option>ZIP</option>
+              <option>IPYNB</option>
+              <option>DOCX</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>Visible to Students</label>
+            <select id="matVisible">
+              <option value="yes">Yes – Immediately</option>
+              <option value="no">No – Draft</option>
+            </select>
+          </div>
+        </div>
+        <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <p>Click to browse or drag &amp; drop your file here</p>
+          <p><strong>PDF, Video, ZIP, DOCX</strong> – Max 500 MB</p>
+          <input type="file" id="fileInput" style="display:none" onchange="simulateUpload()"/>
+        </div>
+        <button class="btn-primary" style="background:#5b6cf6;box-shadow:none;margin-top:16px" onclick="addMaterialManual()">
+          <i class="fas fa-plus"></i> Add Material
+        </button>
+      </div>
+
+      <!-- Existing materials -->
+      <div class="form-card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+          <h3><i class="fas fa-archive" style="color:#5b6cf6;margin-right:8px"></i>All Materials</h3>
+          <select onchange="filterMaterials(this.value)" style="padding:8px 12px;border-radius:8px;border:1.5px solid rgba(91,108,246,.2);font-family:'DM Sans',sans-serif;font-size:.83rem;outline:none">
+            <option value="">All Courses</option>
+            <option>Full-Stack Web Development</option>
+            <option>Python for Data Science</option>
+            <option>Mobile App Development</option>
+          </select>
+        </div>
+        <div id="materialList"></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="../assets/js/shared.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/Sailabee.js"></script>
+<script>
+requireProvider();
+
+renderMaterials('materialList');
+
+function addMaterialManual() {
+  const t = document.getElementById('matTitle').value.trim();
+  if (!t) { showToast('Please enter a material title.', false); return; }
+  MATERIALS.unshift({
+    id: Date.now(), title: t,
+    type: document.getElementById('matType').value,
+    course: document.getElementById('matCourse').value,
+    size: '—', date: new Date().toLocaleDateString('en-MY')
+  });
+  document.getElementById('matTitle').value = '';
+  renderMaterials('materialList');
+  showToast(`"${t}" added successfully!`);
+}
+
+function filterMaterials(course) {
+  const items = document.querySelectorAll('.material-card');
+  items.forEach(card => {
+    const txt = card.textContent;
+    card.style.display = !course || txt.includes(course) ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>
