@@ -293,3 +293,24 @@ function switchTab(name, el, prefix) {
   if (el)   el.classList.add('active');
 }
 
+/*Enroll modal / payment*/
+function selectPayMethod(btn) {
+  document.querySelectorAll('.pm-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function processPayment(courseTitle, fee, provider, courseId) {
+  const name = (document.getElementById('payName') || {}).value?.trim();
+  const ref  = (document.getElementById('payRef')  || {}).value?.trim();
+  if (!name || !ref) { showToast('Please fill in your payment details.', false); return; }
+  const modal = document.getElementById('payModal');
+  if (modal) modal.classList.remove('open');
+  showToast('Processing payment…');
+  setTimeout(() => {
+    window.location.href = 'receipt.html?id=' + (courseId || '') +
+      '&course=' + encodeURIComponent(courseTitle) +
+      '&fee=' + encodeURIComponent(fee) +
+      '&provider=' + encodeURIComponent(provider);
+  }, 1500);
+}
+
